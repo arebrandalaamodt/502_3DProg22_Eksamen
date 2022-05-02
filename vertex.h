@@ -30,8 +30,11 @@ public:
     void setX(float px);
     void setY(float py);
     void setZ(float pz);
+    void setR(float pr);
+    void setG(float pg);
+    void setB(float pb);
 
-    // setters
+    // getters
     float getX();
     float getY();
     float getZ();

@@ -66,6 +66,21 @@ void Vertex::setZ(float pz)
     m_xyz[2] = pz;
 }
 
+void Vertex::setR(float pr)
+{
+    m_normal[0] = pr;
+}
+
+void Vertex::setG(float pg)
+{
+    m_normal[1] = pg;
+}
+
+void Vertex::setB(float pb)
+{
+    m_normal[2] = pb;
+}
+
 
 
 float Vertex::getX()

@@ -15,6 +15,7 @@
 #include "mainwindow.h"
 #include "logger.h"
 //~~
+#include "sun.h"
 #include "light.h"
 #include "heightmap.h"
 #include "trianglesurface.h"
@@ -127,8 +128,9 @@ void RenderWindow::init()
 
     setupGameObject(); //Sets up every game object
     mCamera.init();
-    mCamera.perspective(40, 4.0/3.0, 0.1, 500.0);
+    mCamera.perspective(40, 4.0/3.0, 0.1, 1000.0);
     mCamera.setTarget(Player);
+    mCamera.SetPosition(Player->getPosition() + QVector3D(50.f, 50.f, 10.f));
 
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
@@ -156,6 +158,7 @@ void RenderWindow::setupGameObject()
 
     Player = new InteractiveObject("Player", MeshGenerator::Octahedron(1));
     Player->setupShader(mShaderInfo[0]);
+    Player->setPosition(250.f, 250.f, 10.f);
     Player->mShaderInfo.TextureID = 0;
     Player->setDrawMethod(EDrawMethod::Triangles);
     mObjects.push_back (Player);
@@ -166,7 +169,7 @@ void RenderWindow::setupGameObject()
 //    Plane->setDrawMethod(EDrawMethod::Triangles);
 //    mObjects.push_back (Plane);
 
-    //Oppgave 2
+    //Oppgave 1
     HeightmapGround = new Heightmap();
     HeightmapGround->setName("Heightmap");
     HeightmapGround->setupShader(mShaderInfo[2]);
@@ -174,13 +177,23 @@ void RenderWindow::setupGameObject()
     HeightmapGround->setDrawMethod(EDrawMethod::Triangles);
     mObjects.push_back (HeightmapGround);
 
+    //Oppgave 1
+//    mLight = new Light();
+//    mLight->setupShader(mShaderInfo[2]);
+//    mLight->mShaderInfo.TextureID = 3;
+//    mLight->setDrawMethod(EDrawMethod::Triangles);
+//    mLight->move(.1f, .1f, 5.f);
+//    mObjects.push_back (mLight);
+
     //Oppgave 2
-    mLight = new Light();
-    mLight->setupShader(mShaderInfo[2]);
-    mLight->mShaderInfo.TextureID = 3;
-    mLight->setDrawMethod(EDrawMethod::Triangles);
-    mLight->move(.1f, .1f, 5.f);
-    mObjects.push_back (mLight);
+    mSun = new Sun();
+    mSun->setVertices(MeshGenerator::Octahedron(1));
+    mSun->setMonoColor(QVector3D(1.f, 1.f, 0.f));
+    mSun->setupShader(mShaderInfo[0]);
+    mSun->mShaderInfo.TextureID = 0;
+    mSun->setDrawMethod(EDrawMethod::Triangles);
+    mSun->mLightStrenght = 200.f;
+    mObjects.push_back (mSun);
 
 
 }
@@ -278,7 +291,7 @@ void RenderWindow::render()
         }
         if((*i)->mShaderInfo.Shader == mShaderInfo[0].Shader)
         {
-            std::cout << (*i)->getName() << "'s Shader ID = 0" << std::endl;
+//            std::cout << (*i)->getName() << "'s Shader ID = 0" << std::endl;
 
             glUseProgram((*i)->mShaderInfo.Shader->getProgram());
 
@@ -290,7 +303,7 @@ void RenderWindow::render()
         }
         else if((*i)->mShaderInfo.Shader == mShaderInfo[1].Shader)
         {
-            std::cout << (*i)->getName() << "'s Shader ID = 1" << std::endl;
+//            std::cout << (*i)->getName() << "'s Shader ID = 1" << std::endl;
 
             glUseProgram((*i)->mShaderInfo.Shader->getProgram());
 
@@ -307,32 +320,26 @@ void RenderWindow::render()
         else if((*i)->mShaderInfo.Shader == mShaderInfo[2].Shader)
         {
 
-            std::cout << (*i)->getName() << "'s Shader ID = 2" << std::endl;
-
+//            std::cout << (*i)->getName() << "'s Shader ID = 2" << std::endl;
             glUseProgram((*i)->mShaderInfo.Shader->getProgram());
-            std::cout << (*i)->getName() << "| 001" << std::endl;
+//            std::cout << (*i)->getName() << "| 001" << std::endl;
+            glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
+//            std::cout << (*i)->getName() << "| 002" << std::endl;
+            glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
+//            std::cout << (*i)->getName() << "| 003" << std::endl;
+//            std::cout << (*i)->getName() << "| 004" << std::endl;
+            glUniform3f(mLightPositionUniform, mSun->mMatrix.column(3).x(), mSun->mMatrix.column(3).y(),mSun->mMatrix.column(3).z());
+//            std::cout << (*i)->getName() << "| 005" << std::endl;
+            glUniform3f(mCameraPositionUniform, mCamera.GetPosition().x(), mCamera.GetPosition().y(), mCamera.GetPosition().z());
+//            std::cout << (*i)->getName() << "| 006" << std::endl;
+            glUniform3f(mLightColorUniform, mSun->mLightColor.x(), mSun->mLightColor.y(), mSun->mLightColor.z());
+//            std::cout << (*i)->getName() << "| 007" << std::endl;
+            glUniform1f(mSpecularStrengthUniform, mSun->mSpecularStrenght);
+//            std::cout << (*i)->getName() << "| 008" << std::endl;
 
             mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
-            std::cout << (*i)->getName() << "| 002" << std::endl;
-
-            glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
-            std::cout << (*i)->getName() << "| 003" << std::endl;
-
-            std::cout << (*i)->getName() << "| 004" << std::endl;
-
-
-            glUniform3f(mLightPositionUniform, mLight->mMatrix.column(3).x(), mLight->mMatrix.column(3).y(),mLight->mMatrix.column(3).z());
-            std::cout << (*i)->getName() << "| 005" << std::endl;
-            glUniform3f(mCameraPositionUniform, mCamera.GetPosition().x(), mCamera.GetPosition().y(), mCamera.GetPosition().z());
-            std::cout << (*i)->getName() << "| 006" << std::endl;
-            glUniform3f(mLightColorUniform, mLight->mLightColor.x(), mLight->mLightColor.y(), mLight->mLightColor.z());
-            std::cout << (*i)->getName() << "| 007" << std::endl;
-            glUniform1f(mSpecularStrengthUniform, mLight->mSpecularStrenght);
-            std::cout << (*i)->getName() << "| 008" << std::endl;
-
-
             (*i)->draw();
-            std::cout << (*i)->getName() << "| 009" << std::endl;
+//            std::cout << (*i)->getName() << "| 009" << std::endl;
 
         }
         else
@@ -547,17 +554,21 @@ void RenderWindow::Tick(float deltaTime)
 {
     mCamera.Tick(deltaTime);
 
-
-    if(Player && mLight)
+    if (mSun)
     {
-        mLight->mMatrix.translate({0.1f, 0, 0});
-        mLight->mMatrix.rotate(1, {0, 0, 1});
-        mLight->mMatrix.setToIdentity();
-
-        QVector3D playerPos = Player->getPosition();
-        playerPos.setZ(playerPos.z()+10.f);
-        mLight->mMatrix.translate(playerPos);
+        mSun->progressOrbit();
     }
+
+//    if(Player && mLight)
+//    {
+//        mLight->mMatrix.translate({0.1f, 0, 0});
+//        mLight->mMatrix.rotate(1, {0, 0, 1});
+//        mLight->mMatrix.setToIdentity();
+
+//        QVector3D playerPos = Player->getPosition();
+//        playerPos.setZ(playerPos.z()+10.f);
+//        mLight->mMatrix.translate(playerPos);
+//    }
 
 
     if (Player)

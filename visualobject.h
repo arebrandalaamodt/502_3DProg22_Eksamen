@@ -58,8 +58,11 @@ public:
 
 
     virtual QVector3D getPosition();
+    virtual void setPosition (const QVector3D positionToSet);
 
+    virtual void updateMatrix();
 
+    virtual void setMonoColor(QVector3D colorToSet);
 
 
     virtual void setVertices(std::vector<Vertex> vertices) {mVertices = vertices; }

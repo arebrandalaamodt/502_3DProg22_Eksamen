@@ -90,6 +90,20 @@ void MainWindow::on_rotationButton_toggled(bool checked)
     }
 }
 
+void MainWindow::on_ToggleEditorMode_toggled(bool checked)
+{
+    if(checked)
+    {
+//        mRenderWindow->bEditorModeEnabled = true;
+//        ui->ToggleEditorMode->setText("Stop rotation");
+    }
+    else
+    {
+//        mRenderWindow->mRotate = false;
+//        ui->ToggleEditorMode->setText("Start rotation");
+    }
+}
+
 //File menu Exit closes the program
 void MainWindow::on_fileExit_triggered()
 {

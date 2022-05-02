@@ -76,6 +76,32 @@ QVector3D VisualObject::getPosition()
     return QVector3D{position.x(), position.y(), position.z()};
 }
 
+void VisualObject::setPosition(const QVector3D positionToSet)
+{
+        mx = positionToSet.x();
+        my = positionToSet.y();
+        mz = positionToSet.z();
+        mPosition.setToIdentity();
+        mPosition.translate(positionToSet.x(), positionToSet.y(), positionToSet.z());
+        updateMatrix();
+}
+
+void VisualObject::updateMatrix()
+{
+    mMatrix = mPosition * mRotation * mScale;
+}
+
+void VisualObject::setMonoColor(QVector3D colorToSet)
+{
+    for(auto i = mVertices.begin(); i != mVertices.end(); i++)
+    {
+        i->setR(colorToSet.x());
+        i->setG(colorToSet.y());
+        i->setB(colorToSet.z());
+    }
+}
+
+//auto i = mObjects.begin(); i != mObjects.end(); i++)
 
 
 void VisualObject::setName(std::string name)

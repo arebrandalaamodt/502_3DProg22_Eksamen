@@ -136,6 +136,7 @@ private:
     class Heightmap*    HeightmapGround {nullptr};
 
     class Light*        mLight          {nullptr};
+    class Sun*          mSun            {nullptr};
 
 //    VisualObject*  mOctahedronBall      {nullptr};
 //    VisualObject*  mTest                {nullptr};

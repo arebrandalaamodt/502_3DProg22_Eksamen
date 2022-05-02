@@ -49,7 +49,7 @@ private:
     QVector3D mTargetPos;
     QVector3D mDirection;
 
-    float mDistanceToTarget{100.f};        // Wanted distance to target
+    float mDistanceToTarget{50.f};        // Wanted distance to target
     float mMovementSensitivity = 0.5f;      // Mouse sensitivity
 
     float mZoomSensitivity {0.7f};
