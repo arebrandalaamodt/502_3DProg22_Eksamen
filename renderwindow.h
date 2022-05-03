@@ -127,7 +127,12 @@ protected:
     //~~
 private:
     std::vector<VisualObject*> mObjects;
-    Camera mCamera;
+
+    Camera mCamera;  // Camera for Editor Mode
+    Camera mCamera2; // Camera for Play Mode
+
+    Camera* mCurrentCamera              {nullptr};
+
     VisualObject*       mXYZ            {nullptr};
     VisualObject*       Plane           {nullptr};
 
@@ -140,6 +145,11 @@ private:
 
 
     bool bIsEditorModeEnabled           {true};
+
+public:
+    void toggleEditorMode();
+
+
 
 
 //    VisualObject*  mOctahedronBall      {nullptr};

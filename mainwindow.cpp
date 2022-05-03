@@ -94,13 +94,11 @@ void MainWindow::on_ToggleEditorMode_toggled(bool checked)
 {
     if(checked)
     {
-//        mRenderWindow->bEditorModeEnabled = true;
-//        ui->ToggleEditorMode->setText("Stop rotation");
+        mRenderWindow->toggleEditorMode();
     }
     else
     {
-//        mRenderWindow->mRotate = false;
-//        ui->ToggleEditorMode->setText("Start rotation");
+        mRenderWindow->toggleEditorMode();
     }
 }
 

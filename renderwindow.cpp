@@ -161,7 +161,7 @@ void RenderWindow::setupGameObject()
 
     mPlayer = new InteractiveObject("mPlayer", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
     mPlayer->setupShader(mShaderInfo[2]);
-//    mPlayer->setPosition(250.f, 250.f, 10.f);
+    mPlayer->setPosition(250.f, 250.f, 10.f);
     mPlayer->mShaderInfo.TextureID = 2;
     mPlayer->setDrawMethod(EDrawMethod::Triangles);
     mObjects.push_back (mPlayer);
@@ -179,6 +179,8 @@ void RenderWindow::setupGameObject()
     HeightmapGround->setupShader(mShaderInfo[2]);
     HeightmapGround->mShaderInfo.TextureID = 3;
     HeightmapGround->setDrawMethod(EDrawMethod::Triangles);
+//    HeightmapGround->bEditorOnlyRender = true;
+
     mObjects.push_back (HeightmapGround);
 //    HeightmapGround->bShouldBeRendered = false;
 
@@ -286,29 +288,16 @@ void RenderWindow::render()
         {
             if((*i)->mShaderInfo.Shader == mShaderInfo[0].Shader)
             {
-    //            std::cout << (*i)->getName() << "'s Shader ID = 0" << std::endl;
-
                 glUseProgram((*i)->mShaderInfo.Shader->getProgram());
-
                 glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
-    //                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
-
                 mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
                 (*i)->draw();
             }
             else if((*i)->mShaderInfo.Shader == mShaderInfo[1].Shader)
             {
-    //            std::cout << (*i)->getName() << "'s Shader ID = 1" << std::endl;
-
                 glUseProgram((*i)->mShaderInfo.Shader->getProgram());
-
                 glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
-    //                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
-
                 glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
-
-    //                glActiveTexture(GL_TEXTURE1);
-
                 mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
                 (*i)->draw();
             }
@@ -508,11 +497,7 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     }
     if (event->key() == Qt::Key_T)
     {
-        for (auto i = mObjects.begin(); i != mObjects.end(); i++)
-        {
-            (*i)->toggleEditorMode();
-        }
-
+        toggleEditorMode();
     }
 
 
@@ -600,5 +585,14 @@ void RenderWindow::Tick(float deltaTime)
 
 //    mCamera.SetPosition(QVector3D{deletemeTest,deletemeTest, deletemeTest});
 
-//    mCamera.translate(0,0,deletemeTest);
+    //    mCamera.translate(0,0,deletemeTest);
+}
+
+void RenderWindow::toggleEditorMode()
+{
+    bIsEditorModeEnabled = !bIsEditorModeEnabled;
+    for (auto i = mObjects.begin(); i != mObjects.end(); i++)
+    {
+        (*i)->toggleEditorMode();
+    }
 }
