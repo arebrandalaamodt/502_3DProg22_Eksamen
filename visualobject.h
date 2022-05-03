@@ -59,6 +59,7 @@ public:
 
     virtual QVector3D getPosition();
     virtual void setPosition (const QVector3D positionToSet);
+//    virtual void getPosition();
 
     virtual void updateMatrix();
 

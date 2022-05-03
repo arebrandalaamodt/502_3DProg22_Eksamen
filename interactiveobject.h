@@ -26,8 +26,10 @@ public:
 
     //~~//
      private:
-    QVector3D ForwardVector{1.f,0.f,0.f};
-    QVector3D RightVector{0.f,1.f,0.f};
+    QVector3D ForwardVector {1.0f,  0.0f,   0.0f};
+    QVector3D RightVector   {0.0f,  1.0f,   0.0f};
+
+    float PI {3.14159265359};
 
 public:
     QVector3D GetForward() const {return ForwardVector;}
@@ -38,6 +40,13 @@ public:
 
     void MoveForward(float value);
     void MoveRight(float value);
+
+    void MoveForwardLocal(float value);
+//    void MoveRightLocal(float value);
+
+    void RotateRight(float value);
+    void RotateLeft(float value);
+
 
     float mx, my, mz {0.f}; // posisjon
 

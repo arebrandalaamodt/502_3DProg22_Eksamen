@@ -86,6 +86,65 @@ void InteractiveObject::MoveRight(float value)
     updateMatrix();
 }
 
+void InteractiveObject::MoveForwardLocal(float value)
+{
+    QVector3D temp = getPosition();
+    QVector3D tempForwardVector = GetForward();
+
+//    std::cout << "temp x: " << temp.x() << " | y: " << temp.y() << std::endl;
+
+    setPosition(temp.x() + tempForwardVector.x() * value,
+                temp.y() + tempForwardVector.y() * value,
+                temp.z());
+}
+
+void InteractiveObject::RotateRight(float value)
+{
+    QVector3D forwardOrigo = GetForward();
+
+    std::cout << "forwardOrigo x: " << forwardOrigo.x() << " | y: " << forwardOrigo.y() << std::endl;
+
+    float tempX {0};
+    float tempY {0};
+
+    if(value > 0)
+    {
+        tempX = (forwardOrigo.x() * cos(PI/100) ) + (forwardOrigo.y() * sin(PI/100));
+        tempY = (forwardOrigo.y() * cos(PI/100) ) - (forwardOrigo.x() * sin(PI/100));
+    }
+    else if (value < 0)
+    {
+        tempX = (forwardOrigo.x() * cos(PI/100) ) - (forwardOrigo.y() * sin(PI/100));
+        tempY = (forwardOrigo.y() * cos(PI/100) ) + (forwardOrigo.x() * sin(PI/100));
+    }
+    else
+    {
+        std::cout << "Rotating with 0 as input" << std::endl;
+    }
+
+    forwardOrigo.setX(tempX);
+    forwardOrigo.setY(tempY);
+
+    SetForward(forwardOrigo);
+}
+
+void InteractiveObject::RotateLeft(float value)
+{
+
+}
+
+//void InteractiveObject::MoveRightLocal(float value)
+//{
+//    QVector3D temp = getPosition();
+//    QVector3D tempForwardVector = GetForward();
+
+//    std::cout << "temp x: " << temp.x() << " | y: " << temp.y() << std::endl;
+
+//    setPosition(temp.x() + tempForwardVector.x() * value,
+//                temp.y() + tempForwardVector.y() * value,
+//                temp.z());
+//}
+
 void InteractiveObject::setPosition(float x, float y, float z)
 {
 //    x = x +1;

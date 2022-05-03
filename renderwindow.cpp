@@ -158,7 +158,7 @@ void RenderWindow::setupGameObject()
 
     mPlayer = new InteractiveObject("mPlayer", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
     mPlayer->setupShader(mShaderInfo[2]);
-    mPlayer->setPosition(250.f, 250.f, 10.f);
+//    mPlayer->setPosition(250.f, 250.f, 10.f);
     mPlayer->mShaderInfo.TextureID = 2;
     mPlayer->setDrawMethod(EDrawMethod::Triangles);
     mObjects.push_back (mPlayer);
@@ -575,19 +575,24 @@ void RenderWindow::Tick(float deltaTime)
     {
         if (mCurrentInputs[Qt::Key_W])
         {
-            mPlayer->MoveForward(1);
+//            mPlayer->MoveForward(1);
+            mPlayer->MoveForwardLocal(1);
         }
         if (mCurrentInputs[Qt::Key_S])
         {
-            mPlayer->MoveForward(-1);
+//            mPlayer->MoveForward(-1);
+            mPlayer->MoveForwardLocal(-1);
         }
         if (mCurrentInputs[Qt::Key_D])
         {
-            mPlayer->MoveRight(-1);
+//            mPlayer->MoveRight(-1);
+            mPlayer->RotateRight(.1);
         }
         if (mCurrentInputs[Qt::Key_A])
         {
-            mPlayer->MoveRight(1);
+//            mPlayer->MoveRight(1);
+            mPlayer->RotateRight(-.1);
+
         }
         if (mCurrentInputs[Qt::Key_E])
         {
