@@ -271,19 +271,16 @@ Vertex MeshGenerator::fourPointBezierCurveCalc(Vertex p0, Vertex p1, Vertex p2, 
     return returnPoint;
 }
 
-std::vector<Vertex> MeshGenerator::FourPointBezierCurve()
+std::vector<Vertex> MeshGenerator::FourPointBezierCurve(Vertex p0, Vertex p1, Vertex p2, Vertex p3)
 {
     std::vector<Vertex> verticesOut;
 
-    Vertex v0(10,10,10,     1,0,1);
-    Vertex v1(30,20,10,     1,0,1);
-    Vertex v2(40,10,10,     1,0,1);
-    Vertex v3(50,30,10,     1,0,1);
+
 
     float xmin = 0.0f, xmax = 1.0f, h = 0.01f; // The size to draw // x1
     for (float x = xmin; x < xmax; x += h)
     {
-        verticesOut.push_back(fourPointBezierCurveCalc(v0, v1, v2, v3, x));
+        verticesOut.push_back(fourPointBezierCurveCalc(p0, p1, p2, p3, x));
     }
     return verticesOut;
 }

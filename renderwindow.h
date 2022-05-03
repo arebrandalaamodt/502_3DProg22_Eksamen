@@ -140,6 +140,8 @@ private:
     InteractiveObject*  mPlayer             {nullptr};
     InteractiveObject*  mEditorModeTarget   {nullptr};
 
+    NPC*                mNPC1               {nullptr};
+
 
     class Heightmap*    HeightmapGround     {nullptr};
 

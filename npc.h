@@ -1,38 +1,36 @@
-//#ifndef NPC_H
-//#define NPC_H
+#ifndef NPC_H
+#define NPC_H
 
-//#include "interactiveobject.h"
-//#include <chrono>
+#include "interactiveobject.h"
+#include <chrono>
 
 
-////class Cube;
-//class NPC : public InteractiveObject
-//{
-//public:
-//    NPC();
-//    ~NPC() {}
+//class Cube;
+class NPC : public InteractiveObject
+{
+public:
+    NPC(std::string name, std::vector<Vertex> verticesVector);
+    ~NPC() {}
 
-//    void patrol(long pmsPerDraw);
-////    void setPosition(float x, float y, float z);
+    void patrol();
+    void setPatrolPathObject(VisualObject* objectToSet);
+private:
+    std::vector<Vertex> mBezierVertices;
+    bool bGoingRight    {true};
 
+    VisualObject* patrolPathObject;
+    QVector3D patrolPathLocation {0.f, 0.f, 0.f};
+    std::vector<Vertex> bezierVertices;
+    int sizeOfBezierVertices {0};
+    int patrolTracker {0};
+    void fillBezierVertices();
 
 //    double msPerDraw;
 //    double xPos {-5.f};
 //    double yPos {0};
 //    double zPos {0};
 
-//    bool bGoingRight{1};
 
+};
 
-
-
-
-
-
-
-
-//    virtual void init22222222(GLint matrixUniform);
-//    virtual void draw();
-//};
-
-//#endif // NPC_H
+#endif // NPC_H

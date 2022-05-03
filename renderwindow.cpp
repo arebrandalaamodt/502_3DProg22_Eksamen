@@ -15,6 +15,7 @@
 #include "mainwindow.h"
 #include "logger.h"
 //~~
+#include "vertex.h"
 #include "sun.h"
 #include "light.h"
 #include "heightmap.h"
@@ -172,7 +173,7 @@ void RenderWindow::setupGameObject()
     mPlayer->setScale(3.f);
     mObjects.push_back (mPlayer);
 
-    mEditorModeTarget = new InteractiveObject("EditorModeTarget", MeshGenerator::OBJFile("../3Dprog22/Assets/Camera.obj"));
+    mEditorModeTarget = new InteractiveObject("EditorModeTarget", MeshGenerator::OBJFile("../3Dprog22/Assets/camera.obj"));
     mEditorModeTarget->setupShader(mShaderInfo[2]);
     mEditorModeTarget->setPosition(250.f, 250.f, 10.f);
     mEditorModeTarget->mShaderInfo.TextureID = 2;
@@ -219,8 +220,11 @@ void RenderWindow::setupGameObject()
     mSun->mLightStrenght = 200.f;
     mObjects.push_back (mSun);
 
-    //Oppgave 7
-    mBezierCurve = new VisualObject("BezierCurve", MeshGenerator::FourPointBezierCurve());
+    //Oppgave 6
+    mBezierCurve = new VisualObject("BezierCurve", MeshGenerator::FourPointBezierCurve(Vertex(10,10,10,1,0,1),
+                                                                                       Vertex(30,20,10,1,0,1),
+                                                                                       Vertex(40,10,10,1,0,1),
+                                                                                       Vertex(50,30,10,1,0,1)));
     mBezierCurve->setupShader(mShaderInfo[0]);
     mBezierCurve->mShaderInfo.TextureID = 0;
     mBezierCurve->setDrawMethod(EDrawMethod::Lines);
@@ -228,6 +232,16 @@ void RenderWindow::setupGameObject()
 //    mXYZ->bEditorOnlyRender = false;
     mObjects.push_back(mBezierCurve);
 
+    //Oppgave 6
+    mNPC1 = new NPC("NPC1", MeshGenerator::Cube());
+    mNPC1->setupShader(mShaderInfo[0]);
+    mNPC1->mShaderInfo.TextureID = 0;
+
+    mNPC1->setPatrolPathObject(mBezierCurve);
+
+
+
+    mObjects.push_back(mNPC1);
 
 }
 
@@ -557,6 +571,10 @@ void RenderWindow::Tick(float deltaTime)
     if (mSun)
     {
         mSun->progressOrbit();
+    }
+    if (mNPC1)
+    {
+        mNPC1->patrol();
     }
 
     //Oppgave 3

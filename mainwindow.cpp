@@ -76,19 +76,7 @@ void MainWindow::init()
 }
 
 //Example of a slot called from the button on the top of the program.
-void MainWindow::on_rotationButton_toggled(bool checked)
-{
-    if(checked)
-    {
-        mRenderWindow->mRotate = true;
-        ui->rotationButton->setText("Stop rotation");
-    }
-    else
-    {
-        mRenderWindow->mRotate = false;
-        ui->rotationButton->setText("Start rotation");
-    }
-}
+
 
 void MainWindow::on_ToggleEditorMode_toggled(bool checked)
 {

@@ -1,132 +1,80 @@
-//#include "npc.h"
-//#include "graph.h"
-//#include <iostream>
-//#include <iomanip>
+#include <iostream>
+
+#include "meshgenerator.h"
+#include "npc.h"
 
 
-//NPC::NPC()
+NPC::NPC(std::string name, std::vector<Vertex> verticesVector)
+{
+    mName = name;
+    mVertices = verticesVector;
+    fillBezierVertices();
+
+
+}
+
+void NPC::setPatrolPathObject(VisualObject* objectToSet)
+{
+    patrolPathObject = objectToSet;
+
+    if (patrolPathObject)
+    {
+        std::cout << "patrolPathObject true " << std::endl;
+        patrolPathLocation = patrolPathObject->getPosition();
+        std::cout << "patrolPathLocation | x | = " << patrolPathLocation.x() << " | y | = " << patrolPathLocation.y() << " | z | " << patrolPathLocation.z() << std::endl;
+    }
+}
+
+void NPC::fillBezierVertices()
+{
+        Vertex v0(10,10,10,     1,0,1);
+        Vertex v1(30,20,10,     1,0,1);
+        Vertex v2(40,10,10,     1,0,1);
+        Vertex v3(50,30,10,     1,0,1);
+
+    float xmin = 0.0f, xmax = 1.0f, h = 0.01f; // The size to draw // x1
+    for (float x = xmin; x < xmax; x += h)
+    {
+        bezierVertices.push_back(MeshGenerator::fourPointBezierCurveCalc(v0, v1, v2, v3, x));
+    }
+
+    sizeOfBezierVertices = bezierVertices.size() - 1;
+    std::cout << "sizeOfBezierVertices = " << sizeOfBezierVertices << std::endl;
+
+}
+
+void NPC::patrol()
+{
+    Vertex temp = bezierVertices.at(patrolTracker);
+    QVector3D tempVector(temp.getX()+patrolPathLocation.x(), temp.getY()+patrolPathLocation.y(), temp.getZ()+patrolPathLocation.z());
+
+    this->setPosition(tempVector.x(), tempVector.y(), tempVector.z());
+
+    if(bGoingRight == true)
+    {
+        patrolTracker++;
+        if (patrolTracker > sizeOfBezierVertices)
+        {
+            patrolTracker = sizeOfBezierVertices;
+            bGoingRight = false;
+        }
+        return;
+    }
+    else if (bGoingRight == false)
+    {
+        patrolTracker--;
+        if (patrolTracker < 0)
+        {
+            patrolTracker = 0;
+            bGoingRight = true;
+        }
+    }
+}
+
+//void NPC::setPosition(float x, float y, float z)
 //{
-//    Vertex v0{0.0,0.0,0.0, 1,0,0,0,0};
-//    mVertices.push_back(v0);
-//    Vertex v1{0.5,0.0,0.0, 0,1,0,0,0};
-//    mVertices.push_back(v1);
-//    Vertex v2{0.5,0.5,0.0, 0,0,1,0,0};
-//    mVertices.push_back(v2);
-//    Vertex v3{0.0,0.0,0.0, 0,0,1,0,0};
-//    mVertices.push_back(v3);
-//    Vertex v4{0.5,0.5,0.0, 0,1,0,0,0};
-//    mVertices.push_back(v4);
-//    Vertex v5{0.0,0.5,0.0, 1,0,0,0,0};
-//    mVertices.push_back(v5);
-
-////    end = std::chrono::system_clock::now(); // this is the end point
-
+////    mMatrix.translate(0,0,0);
+////    mMatrix.
 //}
 
-//void NPC::patrol(long pnnsPerDraw)
-//{
 
-//    msPerDraw = pnnsPerDraw/1000000.f;
-
-
-////    std::cout << std::setprecision(9) << msPerDraw << std::endl;
-
-
-//    if (bGoingRight)
-//    {
-//        xPos += msPerDraw;
-//        yPos = Graph::function(xPos);
-
-//        if (xPos > 5.0f)
-//           {
-//               bGoingRight = false;
-//               xPos = 5.0f;
-//           }
-//    }
-//    else if (!bGoingRight)
-//    {
-//        xPos -= msPerDraw;
-//        yPos = Graph::function(xPos);
-
-//        if (xPos < -5.0f)
-//        {
-//            bGoingRight = true;
-//            xPos = -5.0f;
-//        }
-//    }
-
-//    this->setPosition(xPos, yPos, zPos);
-
-
-
-
-////    std::cout << std::setprecision(9) << xPos << std::endl;
-
-
-////    std::chrono::time_point<std::chrono::system_clock> end;
-////    std::chrono::milliseconds ms(5000);
-
-////    end = std::chrono::system_clock::now() + ms; // this is the end point
-
-////    while(std::chrono::system_clock::now() < end) // still less than the end?
-////    {
-
-////        qDebug() << "Hello";
-////    }
-//}
-
-////void NPC::setPosition(float x, float y, float z)
-////{
-//////    mMatrix.translate(0,0,0);
-//////    mMatrix.
-////}
-
-//void NPC::init22222222(GLint matrixUniform)
-//{
-////    mMatrixUniform = matrixUniform;
-//    initializeOpenGLFunctions();
-
-//    glGenVertexArrays( 1, &mVAO );
-//    glBindVertexArray( mVAO );
-
-//    glGenBuffers( 1, &mVBO );
-//    glBindBuffer( GL_ARRAY_BUFFER, mVBO );
-
-//    glBufferData(
-//                GL_ARRAY_BUFFER,                          //what buffer type
-//                mVertices.size() * sizeof( Vertex ),      //how big buffer do we need
-//                mVertices.data(),                         //the actual vertices
-//                GL_STATIC_DRAW                            //should the buffer be updated on the GPU
-//            );
-
-//    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-//    glVertexAttribPointer(
-//                0,
-//                3,
-//                GL_FLOAT,
-//                GL_FALSE,
-//                sizeof(Vertex),
-//                reinterpret_cast<GLvoid*>(0)
-//            );                              // array buffer offset
-//    glEnableVertexAttribArray(0);
-
-//    glVertexAttribPointer(
-//                1,
-//                3,
-//                GL_FLOAT,
-//                GL_FALSE,
-//                sizeof(Vertex),
-//                reinterpret_cast<GLvoid*>((3 * sizeof(GLfloat)))
-//                );
-//    glEnableVertexAttribArray(1);
-
-//    glBindVertexArray(0); //Releases binds
-
-//}
-
-//void NPC::draw()
-//{
-//    glBindVertexArray( mVAO );
-//    glUniformMatrix4fv( mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
-//    glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
-//}

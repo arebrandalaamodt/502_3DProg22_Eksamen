@@ -41,8 +41,8 @@ private:    static float MultivariableFunction(float x, float y);
 public:     static std::vector<Vertex> XYZ(float length);
 
 // BezierCurve
-public:     static std::vector<Vertex> FourPointBezierCurve();
-private:    static Vertex fourPointBezierCurveCalc(Vertex p0, Vertex p1, Vertex p2, Vertex p3, float t);
+public:     static std::vector<Vertex> FourPointBezierCurve(Vertex p0, Vertex p1, Vertex p2, Vertex p3);
+public:    static Vertex fourPointBezierCurveCalc(Vertex p0, Vertex p1, Vertex p2, Vertex p3, float t);
 };
 
 
