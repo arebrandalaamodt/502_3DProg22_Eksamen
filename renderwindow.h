@@ -131,21 +131,23 @@ private:
     Camera mCamera;  // Camera for Editor Mode
     Camera mCamera2; // Camera for Play Mode
 
-    Camera* mCurrentCamera              {nullptr};
+    Camera* mCurrentCamera                  {nullptr};
 
-    VisualObject*       mXYZ            {nullptr};
-    VisualObject*       Plane           {nullptr};
-    VisualObject*       mBezierCurve    {nullptr};
+    VisualObject*       mXYZ                {nullptr};
+    VisualObject*       Plane               {nullptr};
+    VisualObject*       mBezierCurve        {nullptr};
 
-    InteractiveObject*  mPlayer         {nullptr};
-
-    class Heightmap*    HeightmapGround {nullptr};
-
-    class Light*        mLight          {nullptr};
-    class Sun*          mSun            {nullptr};
+    InteractiveObject*  mPlayer             {nullptr};
+    InteractiveObject*  mEditorModeTarget   {nullptr};
 
 
-    bool bIsEditorModeEnabled           {true};
+    class Heightmap*    HeightmapGround     {nullptr};
+
+    class Light*        mLight              {nullptr};
+    class Sun*          mSun                {nullptr};
+
+
+    bool bIsEditorModeEnabled               {true};
 
 public:
     void toggleEditorMode();

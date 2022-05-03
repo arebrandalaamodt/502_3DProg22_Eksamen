@@ -77,9 +77,7 @@ void Camera::Tick(float deltaTime)
     }
     else
     {
-//        std::cout << "bot if" << std::endl;
         mTargetPos = QVector3D{0, 0, 0};
-        mTargetPos = this->GetPosition() + QVector3D(10.f, 0.f, 0.f);
     }
 
     mTargetPos.setZ(mTargetPos.z()+2);
@@ -203,3 +201,19 @@ void Camera::Zoom(float diff)
     diff = std::clamp(diff, -10.f, 10.f) * mZoomSensitivity;
     mDistanceToTarget = std::clamp(mDistanceToTarget + diff, 2.f, 40.f);
 }
+
+//void Camera::MoveForward(float value)
+//{
+//    QVector3D temp = QVector3D(value, 0.f, 0.f);
+//    mEye = mEye + temp;
+//}
+
+//void Camera::MoveRight(float value)
+//{
+
+//}
+
+//void Camera::MoveUp(float value)
+//{
+
+//}

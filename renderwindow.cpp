@@ -111,10 +111,6 @@ void RenderWindow::init()
     glBindTexture(GL_TEXTURE_2D, mTexture[2]->id());
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, mTexture[3]->id());
-
-/*    mPmatrixUniform = glGetUniformLocation( mShaderProgram->getProgram(), "pmatrix" );      // Get the matrixUniform location from the shader
-    mVmatrixUniform = glGetUniformLocation( mShaderProgram->getProgram(), "vmatrix" );      // This has to match the "matrix" variable name in the vertex shader
-    mMmatrixUniform = glGetUniformLocation( mShaderProgram->getProgram(), "matrix" );  */     // The uniform is used in the render() function to send the model matrix to the shader
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //    mCamera.init(pMatrixUniform0, vMatrixUniform0);
 //    mCamera.SetPosition({10, -10, 10});
@@ -123,20 +119,21 @@ void RenderWindow::init()
 //    mCamera.lookAt(QVector3D{0,0,10},QVector3D{0,0,0}, QVector3D{0,1,0});
 //    mCamera.translate(2, 5, 0);
 //    mCamera.update();
-
     //~
 
     setupGameObject(); //Sets up every game object
     mCamera.init();
     mCamera.perspective(40, 4.0/3.0, 0.1, 1000.0);
     mCamera.setTarget(mPlayer);
-    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 60.f));
+    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 50.f));
 
     mCamera2.init();
     mCamera2.perspective(40, 4.0/3.0, 0.1, 1000.0);
     mCamera2.setIsEditorCamera(false);
+    mCamera2.setTarget(mEditorModeTarget);
+    mCamera2.SetPosition(mEditorModeTarget->getPosition() + QVector3D(0.f, 0.f, 60.f));
 
-    mCurrentCamera = &mCamera;
+    mCurrentCamera = &mCamera2;
 
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
@@ -165,15 +162,25 @@ void RenderWindow::setupGameObject()
     mXYZ->bEditorOnlyRender = true;
     mObjects.push_back(mXYZ);
 
-    mPlayer = new InteractiveObject("mPlayer", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
+    mPlayer = new InteractiveObject("Player", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
     mPlayer->setupShader(mShaderInfo[2]);
     mPlayer->setPosition(250.f, 250.f, 10.f);
     mPlayer->mShaderInfo.TextureID = 2;
     mPlayer->setDrawMethod(EDrawMethod::Triangles);
 
-    mPlayer->setHeight(200.f);
-
+//    mPlayer->setHeight(200.f);
+    mPlayer->setScale(3.f);
     mObjects.push_back (mPlayer);
+
+    mEditorModeTarget = new InteractiveObject("EditorModeTarget", MeshGenerator::OBJFile("../3Dprog22/Assets/Camera.obj"));
+    mEditorModeTarget->setupShader(mShaderInfo[2]);
+    mEditorModeTarget->setPosition(250.f, 250.f, 10.f);
+    mEditorModeTarget->mShaderInfo.TextureID = 2;
+    mEditorModeTarget->setDrawMethod(EDrawMethod::Triangles);
+    mEditorModeTarget->bEditorOnlyRender = true;
+
+//    mEditorModeTarget->setHeight(200.f);
+    mObjects.push_back (mEditorModeTarget);
 //    mPlayer->MoveForward(0.0f);
 
 //    Plane = new VisualObject("Plane", MeshGenerator::Plane(100.f));
@@ -559,36 +566,50 @@ void RenderWindow::Tick(float deltaTime)
         mPlayer->setHeight(3+HeightmapGround->GetHeight(playerPos.x(), playerPos.y()));
     }
 
-    if (mPlayer)
+    if (mPlayer && mCurrentCamera == &mCamera)
     {
         if (mCurrentInputs[Qt::Key_W])
         {
-//            mPlayer->MoveForward(1);
-            mPlayer->MoveForwardLocal(1);
+            mPlayer->MoveForwardLocal(1.f);
         }
         if (mCurrentInputs[Qt::Key_S])
         {
-//            mPlayer->MoveForward(-1);
-            mPlayer->MoveForwardLocal(-1);
+            mPlayer->MoveForwardLocal(-1.f);
         }
         if (mCurrentInputs[Qt::Key_D])
         {
-//            mPlayer->MoveRight(-1);
-            mPlayer->RotateRight(.1);
+            mPlayer->RotateRight(.2f);
         }
         if (mCurrentInputs[Qt::Key_A])
         {
-//            mPlayer->MoveRight(1);
-            mPlayer->RotateRight(-.1);
-
+            mPlayer->RotateRight(-.2f);
+        }
+    }
+    else if (mEditorModeTarget && mCurrentCamera == &mCamera2)
+    {
+        if (mCurrentInputs[Qt::Key_W])
+        {
+            mEditorModeTarget->move(1.f, 0.f, 0.f);
+        }
+        if (mCurrentInputs[Qt::Key_S])
+        {
+            mEditorModeTarget->move(-1.f, 0.f, 0.f);
+        }
+        if (mCurrentInputs[Qt::Key_D])
+        {
+            mEditorModeTarget->move(0.f, -1.f, 0.f);
+        }
+        if (mCurrentInputs[Qt::Key_A])
+        {
+            mEditorModeTarget->move(0.f, 1.f, 0.f);
         }
         if (mCurrentInputs[Qt::Key_E])
         {
-            mPlayer->move(0.f, 0.f, 1.f);
+            mEditorModeTarget->move(0.f, 0.f, 1.f);
         }
         if (mCurrentInputs[Qt::Key_Q])
         {
-            mPlayer->move(0.f, 0.f, -1.f);
+            mEditorModeTarget->move(0.f, 0.f, -1.f);
         }
     }
 //    mCamera.translate(1.f, 0, 0);
