@@ -41,9 +41,11 @@ public:
     void MoveForward(float value);
     void MoveRight(float value);
 
+    //Oppgave 3
     void MoveForwardLocal(float value);
 //    void MoveRightLocal(float value);
 
+    //Oppgave 3
     void RotateRight(float value);
     void RotateLeft(float value);
 

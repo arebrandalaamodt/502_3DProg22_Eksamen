@@ -59,6 +59,8 @@ public:
 
     virtual QVector3D getPosition();
     virtual void setPosition (const QVector3D positionToSet);
+//    virtual void setPosition(float x, float y, float z);
+
 //    virtual void getPosition();
 
     virtual void updateMatrix();
@@ -99,6 +101,9 @@ protected:
     bool bEditorMode       {true};
     void toggleEditorMode();
 
+    QVector3D Barycentric(QVector3D object, QVector3D P1, QVector3D P2, QVector3D P3);
+    bool isOverlappingTriangle(QVector3D baryc, QVector3D P1, QVector3D P2, QVector3D P3);
+    float GetBarycentricHeight(QVector3D baryc, QVector3D P1, QVector3D P2, QVector3D P3);
 
 //   void setMatrix(GLint* matrixToSet) {mMatrixUniform = matrixToSet;}
 //   void setShader(Shader* shaderToSet) {mShader = shaderToSet;}

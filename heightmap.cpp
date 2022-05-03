@@ -4,10 +4,12 @@
 #include "vertex.h"
 #include "heightmap.h"
 
-Heightmap::Heightmap()
+Heightmap::Heightmap(QString fileName, float heightMultiplier, float scalePerStep, int pixelsPerStep)
+    : mScalePerStep(scalePerStep), mHeightMultiplier(heightMultiplier), mPixelsPerStep(pixelsPerStep)
 {
-    std::cout << "Default Constructor Bad" << std::endl;
-    setVertices(CreateArraysFromHeightmap("../3Dprog22/Assets/EksamenHeightmap.bmp", 40, 1.f, 1));
+//    std::cout << "Default Constructor Bad" << std::endl;
+    setVertices(CreateArraysFromHeightmap(fileName, heightMultiplier, scalePerStep, pixelsPerStep));
+//    setVertices(CreateArraysFromHeightmap("../3Dprog22/Assets/EksamenHeightmap.bmp", 40, 1.f, 1));
 
 }
 
@@ -109,139 +111,44 @@ UV Heightmap::CalculateUV(float xMin, float xMax, float yMin, float yMax, float 
 }
 
 
-//void HeightMap::init(GLint matrixUniform)
-//{
-//    mMatrixUniform = matrixUniform;
-//    dbpt1 = new DebugPoint({0, 0, 0}, "pt1", 0.2);
-//    dbpt2 = new DebugPoint({0, 0, 0}, "pt2", 0.2);
-//    dbpt3 = new DebugPoint({0, 0, 0}, "pt3", 0.2);
-
-//    //must call this to use OpenGL functions
-//    initializeOpenGLFunctions();
-
-//    glGenVertexArrays( 1, &mVAO );
-//    glBindVertexArray( mVAO );
-
-//    //Vertex Buffer Object to hold vertices - VBO
-//    glGenBuffers( 1, &mVBO );
-//    glBindBuffer( GL_ARRAY_BUFFER, mVBO );
-
-//    //Vertex Buffer Object to hold vertices - VBO
-//    glBufferData( GL_ARRAY_BUFFER, mVertices.size()*sizeof( Vertex ), mVertices.data(), GL_STATIC_DRAW );
-
-//    // 1rst attribute buffer : vertices
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0  );          // array buffer offset
-//    glEnableVertexAttribArray(0);
-
-//    // 2nd attribute buffer : colors
-//    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,  sizeof(Vertex),  (GLvoid*)(3 * sizeof(GLfloat)) );
-//    glEnableVertexAttribArray(1);
-
-//    // 3rd attribute buffer : uvs
-//    glVertexAttribPointer(2, 2,  GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)( 6 * sizeof(GLfloat)) );
-//    glEnableVertexAttribArray(2);
-
-//    glBindVertexArray(0);
-
-//    dbpt1->init(matrixUniform);
-//    dbpt2->init(matrixUniform);
-//    dbpt3->init(matrixUniform);
-//}
-
-//void HeightMap::draw()
-//{
-//    initializeOpenGLFunctions();
-//    glBindVertexArray( mVAO );
-//    //glUniformMatrix4fv( mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
-//    //glDrawElements(mDrawMethod, mVertices.size(), GL_UNSIGNED_INT, reinterpret_cast<const void*>(0));//mVertices.size());
-//    glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
-//    glBindVertexArray(0);
-//    dbpt1->draw();
-//    dbpt2->draw();
-//    dbpt3->draw();
-//}
 
 //QVector3D HeightMap::GetNormal(float x, float y)
 //{
 //    return mCurrentNormal.normalized();
 //}
 
-//float HeightMap::GetHeight(float x, float y)
-//{
-//    int xInt = x / mScalePerStep;
-//    int yInt = mImg.height() - y / mScalePerStep;
-//    float height = 0;
-//    if (xInt + 2 > mImg.width()) {
-//        xInt = mImg.width() - 2;
-//    }
-//        if (yInt + 2 > mImg.height()) {
-//            yInt = mImg.height() - 2;
-//        }
-//    if (xInt < 0) xInt = 0;
-//    if (yInt < 0) yInt = 0;
+float Heightmap::GetHeight(float x, float y)
+{
+    int xInt = x / mScalePerStep;
+    int yInt = mImg.height() - y / mScalePerStep;
+    float height = 0;
+    if (xInt + 2 > mImg.width())
+    {
+        xInt = mImg.width() - 2;
+    }
+        if (yInt + 2 > mImg.height())
+        {
+            yInt = mImg.height() - 2;
+        }
+    if (xInt < 0) xInt = 0;
+    if (yInt < 0) yInt = 0;
 
-//    QVector3D p1{float((xInt) * mScalePerStep), float((mImg.height() - yInt -1) * mScalePerStep), (1-mImg.pixelColor(xInt, yInt + 1).lightnessF()) * mHeightMultiplier};
-//    QVector3D p2{float((xInt + 1) * mScalePerStep), float((mImg.height() - yInt - 1) * mScalePerStep), (1-mImg.pixelColor(xInt + 1, yInt + 1).lightnessF()) * mHeightMultiplier};
-//    QVector3D p3{float((xInt) * mScalePerStep), float((mImg.height() - yInt) * mScalePerStep), (1-mImg.pixelColor(xInt, yInt).lightnessF()) * mHeightMultiplier};
+    QVector3D p1{float((xInt) * mScalePerStep), float((mImg.height() - yInt -1) * mScalePerStep), (1-mImg.pixelColor(xInt, yInt + 1).lightnessF()) * mHeightMultiplier};
+    QVector3D p2{float((xInt + 1) * mScalePerStep), float((mImg.height() - yInt - 1) * mScalePerStep), (1-mImg.pixelColor(xInt + 1, yInt + 1).lightnessF()) * mHeightMultiplier};
+    QVector3D p3{float((xInt) * mScalePerStep), float((mImg.height() - yInt) * mScalePerStep), (1-mImg.pixelColor(xInt, yInt).lightnessF()) * mHeightMultiplier};
 
-//    QVector3D baryc = Barycentric({x, y, 0}, p1, p2, p3);
-//    if (isOverlappingTriangle(baryc, p1, p2, p3)) {
-//        height = GetBarycentricHeight(baryc, p1, p2, p3);
-//        mCurrentNormal = QVector3D::crossProduct((p2-p1), (p3-p2));
-//    } else {
-//        p1 = {float((xInt+1) * mScalePerStep), float((mImg.height() - yInt) * mScalePerStep), (1-mImg.pixelColor(xInt + 1, yInt).lightnessF()) * mHeightMultiplier};
-//        // 2 1 3
-//        baryc = Barycentric({x, y, 0}, p2, p1, p3);
-//        height = GetBarycentricHeight(baryc, p2, p1, p3);
-//        mCurrentNormal = QVector3D::crossProduct((p1-p2), (p3-p1));
-//    }
+    QVector3D baryc = Barycentric({x, y, 0}, p1, p2, p3);
+    if (isOverlappingTriangle(baryc, p1, p2, p3)) {
+        height = GetBarycentricHeight(baryc, p1, p2, p3);
+        mCurrentNormal = QVector3D::crossProduct((p2-p1), (p3-p2));
+    } else {
+        p1 = {float((xInt+1) * mScalePerStep), float((mImg.height() - yInt) * mScalePerStep), (1-mImg.pixelColor(xInt + 1, yInt).lightnessF()) * mHeightMultiplier};
+        // 2 1 3
+        baryc = Barycentric({x, y, 0}, p2, p1, p3);
+        height = GetBarycentricHeight(baryc, p2, p1, p3);
+        mCurrentNormal = QVector3D::crossProduct((p1-p2), (p3-p1));
+    }
+    return height;
 
-//    dbpt1->setPosition(p1);
-//    dbpt2->setPosition(p2);
-//    dbpt3->setPosition(p3);
-
-//    return height;
-
-//}
-
-///*
-//float HeightMap::GetHeight(float x, float y)
-//{
-//    QVector3D coordinates = {x, y, 0};
-//    coordinates /= mScalePerStep;
-//    coordinates = mMatrix.map(coordinates);
-//    int xInt = coordinates.x();
-//    int yInt = mImg.height()-coordinates.y();
-
-//    if (xInt >= mImg.width() || yInt >= mImg.height() || xInt < 0 || yInt < 0) return 0;
-//    //float height;// = (1-mImg.pixelColor(xInt, yInt).lightnessF()) * mHeightMultiplier;
-//    QVector3D baryc;
-
-//    QVector3D p1{float(xInt), float(yInt), (1-mImg.pixelColor(xInt, yInt).lightnessF()) * mHeightMultiplier};
-//    QVector3D p2{float(xInt+mScalePerStep), float(yInt), (1-mImg.pixelColor(xInt+1, yInt).lightnessF()) * mHeightMultiplier};
-//    QVector3D p3{float(xInt), float(yInt+mScalePerStep), (1-mImg.pixelColor(xInt, yInt+1).lightnessF()) * mHeightMultiplier};
-//    baryc = Barycentric(coordinates, p1, p2, p3);
-//    if (isOverlappingTriangle(baryc, p1, p2, p3)) {
-
-//        return GetBarycentricHeight(baryc, p1, p2, p3);
-//    }
-
-//    p1 = {float(xInt+mScalePerStep), float(yInt+mScalePerStep), 0};
-//    p3 = {float(xInt), float(yInt+mScalePerStep), 0};
-//    p2 = {float(xInt+mScalePerStep), float(yInt), 0};
-//    baryc = Barycentric(coordinates, p1, p2, p3);
-//    if (isOverlappingTriangle(baryc, p1, p2, p3)) {
-
-//        return GetBarycentricHeight(baryc, p1, p2, p3);
-//    }
-//    dbpt1->setPosition(p1);
-//    dbpt2->setPosition(p2);
-//    dbpt3->setPosition(p3);
-
-//    std::cout << baryc.x() << "\t" << baryc.y() << "\t" << baryc.z() << "\t" << std::endl;
-//    std::cout << xInt << "\t" << yInt << "\t" << mImg.width() << std::endl;
-
-//    return 0;
-//}*/
-
+}
 

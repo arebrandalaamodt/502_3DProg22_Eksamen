@@ -79,6 +79,7 @@ void Camera::Tick(float deltaTime)
     {
 //        std::cout << "bot if" << std::endl;
         mTargetPos = QVector3D{0, 0, 0};
+        mTargetPos = this->GetPosition() + QVector3D(10.f, 0.f, 0.f);
     }
 
     mTargetPos.setZ(mTargetPos.z()+2);

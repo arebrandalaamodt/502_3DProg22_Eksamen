@@ -107,6 +107,8 @@ void InteractiveObject::RotateRight(float value)
     float tempX {0};
     float tempY {0};
 
+    // Følgende formler hentet fra
+    // https://en.wikipedia.org/wiki/Rotation_(mathematics)
     if(value > 0)
     {
         tempX = (forwardOrigo.x() * cos(PI/100) ) + (forwardOrigo.y() * sin(PI/100));

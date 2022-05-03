@@ -7,13 +7,11 @@ std::vector<Vertex> MeshGenerator::OBJFile(const char* fileName, const QVector3D
 {
     return OBJFileLoader::loadOBJ(fileName, color);
 }
-
 std::vector<Vertex> MeshGenerator::OBJFile(const char *fileName)
 {
     return OBJFileLoader::loadOBJ(fileName, QVector3D(0.f, 0.f, 0.f));
 
 }
-
 std::vector<Vertex> MeshGenerator::Plane(float size)
 {
     std::vector<Vertex> verticesOut;
@@ -30,7 +28,6 @@ std::vector<Vertex> MeshGenerator::Plane(float size)
 
     return verticesOut;
 }
-
 std::vector<Vertex> MeshGenerator::Grid(float size)
 {
     std::vector<Vertex> verticesOut;
@@ -47,7 +44,6 @@ std::vector<Vertex> MeshGenerator::Grid(float size)
 
     return verticesOut;
 }
-
 std::vector<Vertex> MeshGenerator::Cube()
 {
     std::vector<Vertex> verticesOut;
@@ -61,7 +57,6 @@ std::vector<Vertex> MeshGenerator::Cube()
 
     return verticesOut;
 }
-
 void MeshGenerator::CreateCubeSide(QVector3D direction, std::vector<Vertex>& verticesOut)
 {
     float r, g, b;
@@ -115,7 +110,6 @@ void MeshGenerator::CreateCubeSide(QVector3D direction, std::vector<Vertex>& ver
     verticesOut.push_back(Vertex{corner6, r, g, b});
 
 }
-
 std::vector<Vertex> MeshGenerator::Octahedron(int recursions)
 {
     std::vector<Vertex> verticesOut;
@@ -138,7 +132,6 @@ std::vector<Vertex> MeshGenerator::Octahedron(int recursions)
 
     return verticesOut;
 }
-
 std::vector<Vertex> MeshGenerator::XYZ(float length)
 {
     std::vector<Vertex> verticesOut;
@@ -154,9 +147,6 @@ std::vector<Vertex> MeshGenerator::XYZ(float length)
 
     return verticesOut;
 }
-
-
-
 void MeshGenerator::OctahedronSubDivide(const QVector3D &a, const QVector3D &b, const QVector3D &c, int n, std::vector<Vertex>& verticesOut)
 {
     if(n > 0)
@@ -187,7 +177,6 @@ void MeshGenerator::OctahedronSubDivide(const QVector3D &a, const QVector3D &b, 
         verticesOut.push_back(v);
     }
 }
-
 float MeshGenerator::SingleVariableFunction(float x)
 {
     float y {0};
@@ -199,7 +188,6 @@ float MeshGenerator::SingleVariableFunction(float x)
 //    std::cout << "y = " << y << std::endl;
     return y;
 }
-
 std::vector<Vertex> MeshGenerator::Create2DGraph()
 {
     std::vector<Vertex> verticesOut;
@@ -220,7 +208,6 @@ std::vector<Vertex> MeshGenerator::Create2DGraph()
 
     return verticesOut;
 }
-
 float MeshGenerator::MultivariableFunction(float x, float y)
 {
     //~~
@@ -239,7 +226,6 @@ float MeshGenerator::MultivariableFunction(float x, float y)
 
     return z;  // * 2.5 gives more zoomed out view?
 }
-
 std::vector<Vertex> MeshGenerator::Create3DGraph()
 {
     std::vector<Vertex> verticesOut;
@@ -263,5 +249,41 @@ std::vector<Vertex> MeshGenerator::Create3DGraph()
             verticesOut.push_back(Vertex{x+h,y+h,z-1.f  ,z  ,z   ,z       ,0,0});
         }
 
+    return verticesOut;
+}
+
+Vertex MeshGenerator::fourPointBezierCurveCalc(Vertex p0, Vertex p1, Vertex p2, Vertex p3, float t)
+{
+    Vertex returnPoint{0,0,1,0,1};
+
+    returnPoint.setX(
+                        ( pow((1-t), 3) * p0.getX()         )
+                    +   ( pow((1-t), 2) * 3 * t * p1.getX() )
+                    +   ( (1 - t) * 3 * t * t *  p2.getX()  )
+                    +   ( t * t * t * p3.getX()             )
+                    );
+    returnPoint.setY(
+                        ( pow((1-t), 3) * p0.getY()         )
+                    +   ( pow((1-t), 2) * 3 * t * p1.getY() )
+                    +   ( (1 - t) * 3 * t * t *  p2.getY()  )
+                    +   ( t * t * t * p3.getY()             )
+                    );
+    return returnPoint;
+}
+
+std::vector<Vertex> MeshGenerator::FourPointBezierCurve()
+{
+    std::vector<Vertex> verticesOut;
+
+    Vertex v0(10,10,10,     1,0,1);
+    Vertex v1(30,20,10,     1,0,1);
+    Vertex v2(40,10,10,     1,0,1);
+    Vertex v3(50,30,10,     1,0,1);
+
+    float xmin = 0.0f, xmax = 1.0f, h = 0.01f; // The size to draw // x1
+    for (float x = xmin; x < xmax; x += h)
+    {
+        verticesOut.push_back(fourPointBezierCurveCalc(v0, v1, v2, v3, x));
+    }
     return verticesOut;
 }

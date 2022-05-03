@@ -14,6 +14,7 @@ class Heightmap : public VisualObject
 public:
 
     Heightmap();
+    Heightmap(QString fileName, float heightMultiplier=1, float scalePerStep=1, int pixelsPerStep=1);
 //    Heightmap(QString fileName = "../3Dprog22/Assets/heightmap.bmp", float heightMultiplier=1, float scalePerStep=1, int pixelsPerStep=1);
     std::vector<Vertex> CreateArraysFromHeightmap(const QString &filepath, float multiplier, float scalePerStep, int pixelsPerStep);
 
@@ -31,7 +32,7 @@ public:
 //    DebugPoint* dbpt3{nullptr};
 
     float GetHeight(float x, float y);
-    QVector3D GetNormal(float x, float y);
+//    QVector3D GetNormal(float x, float y);
 
 //    Heightmap(QString fuleName, float heightMultiplier=1, float scalePerStep=1, int pixelsPerStep=1);
 

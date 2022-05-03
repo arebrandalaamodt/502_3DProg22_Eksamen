@@ -36,6 +36,8 @@ public:
     QVector3D GetUp();
     void setTarget(InteractiveObject *target);
 
+    void setIsEditorCamera(bool boolToSet) {bIsEditorCamera = boolToSet;}
+
 //~
 private:
     GLint  mPmatrixUniform;
@@ -53,6 +55,8 @@ private:
     float mMovementSensitivity = 0.5f;      // Mouse sensitivity
 
     float mZoomSensitivity {0.7f};
+
+    bool bIsEditorCamera {true};
 public:
     void Zoom(float diff);
 

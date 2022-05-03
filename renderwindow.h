@@ -135,6 +135,7 @@ private:
 
     VisualObject*       mXYZ            {nullptr};
     VisualObject*       Plane           {nullptr};
+    VisualObject*       mBezierCurve    {nullptr};
 
     InteractiveObject*  mPlayer         {nullptr};
 

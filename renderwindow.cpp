@@ -130,10 +130,11 @@ void RenderWindow::init()
     mCamera.init();
     mCamera.perspective(40, 4.0/3.0, 0.1, 1000.0);
     mCamera.setTarget(mPlayer);
-    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 40.f));
+    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 60.f));
 
     mCamera2.init();
     mCamera2.perspective(40, 4.0/3.0, 0.1, 1000.0);
+    mCamera2.setIsEditorCamera(false);
 
     mCurrentCamera = &mCamera;
 
@@ -169,6 +170,9 @@ void RenderWindow::setupGameObject()
     mPlayer->setPosition(250.f, 250.f, 10.f);
     mPlayer->mShaderInfo.TextureID = 2;
     mPlayer->setDrawMethod(EDrawMethod::Triangles);
+
+    mPlayer->setHeight(200.f);
+
     mObjects.push_back (mPlayer);
 //    mPlayer->MoveForward(0.0f);
 
@@ -178,8 +182,8 @@ void RenderWindow::setupGameObject()
 //    Plane->setDrawMethod(EDrawMethod::Triangles);
 //    mObjects.push_back (Plane);
 
-    //Oppgave 1
-    HeightmapGround = new Heightmap();
+    //Oppgave 1, 3
+    HeightmapGround = new Heightmap("../3Dprog22/Assets/EksamenHeightmap.bmp", 40, 1.f, 1);
     HeightmapGround->setName("Heightmap");
     HeightmapGround->setupShader(mShaderInfo[2]);
     HeightmapGround->mShaderInfo.TextureID = 3;
@@ -200,6 +204,7 @@ void RenderWindow::setupGameObject()
     //Oppgave 2
     mSun = new Sun();
     mSun->setVertices(MeshGenerator::Octahedron(1));
+    mSun->setName("Sun");
     mSun->setMonoColor(QVector3D(1.f, 1.f, 0.f));
     mSun->setupShader(mShaderInfo[0]);
     mSun->mShaderInfo.TextureID = 0;
@@ -207,6 +212,14 @@ void RenderWindow::setupGameObject()
     mSun->mLightStrenght = 200.f;
     mObjects.push_back (mSun);
 
+    //Oppgave 7
+    mBezierCurve = new VisualObject("BezierCurve", MeshGenerator::FourPointBezierCurve());
+    mBezierCurve->setupShader(mShaderInfo[0]);
+    mBezierCurve->mShaderInfo.TextureID = 0;
+    mBezierCurve->setDrawMethod(EDrawMethod::Lines);
+    mBezierCurve->setPosition(QVector3D(250.f, 250.f, 20.f));
+//    mXYZ->bEditorOnlyRender = false;
+    mObjects.push_back(mBezierCurve);
 
 
 }
@@ -539,17 +552,12 @@ void RenderWindow::Tick(float deltaTime)
         mSun->progressOrbit();
     }
 
-//    if(mPlayer && mLight)
-//    {
-//        mLight->mMatrix.translate({0.1f, 0, 0});
-//        mLight->mMatrix.rotate(1, {0, 0, 1});
-//        mLight->mMatrix.setToIdentity();
-
-//        QVector3D mPlayerPos = mPlayer->getPosition();
-//        mPlayerPos.setZ(mPlayerPos.z()+10.f);
-//        mLight->mMatrix.translate(mPlayerPos);
-//    }
-
+    //Oppgave 3
+    if(mPlayer)
+    {
+        QVector3D playerPos = mPlayer->getPosition();
+        mPlayer->setHeight(3+HeightmapGround->GetHeight(playerPos.x(), playerPos.y()));
+    }
 
     if (mPlayer)
     {

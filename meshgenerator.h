@@ -40,7 +40,9 @@ private:    static float MultivariableFunction(float x, float y);
 // XYZ
 public:     static std::vector<Vertex> XYZ(float length);
 
-
+// BezierCurve
+public:     static std::vector<Vertex> FourPointBezierCurve();
+private:    static Vertex fourPointBezierCurveCalc(Vertex p0, Vertex p1, Vertex p2, Vertex p3, float t);
 };
 
 
