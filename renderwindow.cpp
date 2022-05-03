@@ -132,6 +132,11 @@ void RenderWindow::init()
     mCamera.setTarget(mPlayer);
     mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 40.f));
 
+    mCamera2.init();
+    mCamera2.perspective(40, 4.0/3.0, 0.1, 1000.0);
+
+    mCurrentCamera = &mCamera;
+
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
         (*i)->init();
@@ -290,7 +295,7 @@ void RenderWindow::render()
             {
                 glUseProgram((*i)->mShaderInfo.Shader->getProgram());
                 glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
-                mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
+                mCurrentCamera->update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
                 (*i)->draw();
             }
             else if((*i)->mShaderInfo.Shader == mShaderInfo[1].Shader)
@@ -298,7 +303,7 @@ void RenderWindow::render()
                 glUseProgram((*i)->mShaderInfo.Shader->getProgram());
                 glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
                 glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
-                mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
+                mCurrentCamera->update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
                 (*i)->draw();
             }
             else if((*i)->mShaderInfo.Shader == mShaderInfo[2].Shader)
@@ -321,7 +326,7 @@ void RenderWindow::render()
                 glUniform1f(mSpecularStrengthUniform, mSun->mSpecularStrenght);
     //            std::cout << (*i)->getName() << "| 008" << std::endl;
 
-                mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
+                mCurrentCamera->update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
                 (*i)->draw();
     //            std::cout << (*i)->getName() << "| 009" << std::endl;
 
@@ -476,7 +481,7 @@ void RenderWindow::mouseMoveEvent(QMouseEvent *event)
     float diffY = previousY - newY;
 
     if (mCurrentInputs[Qt::LeftButton]) {
-        mCamera.FollowMouseMovements(diffX, diffY);
+        mCurrentCamera->FollowMouseMovements(diffX, diffY);
     }
 
     previousX = newX;
@@ -522,12 +527,12 @@ void RenderWindow::keyReleaseEvent(QKeyEvent *event)
 
 void RenderWindow::wheelEvent(QWheelEvent *event)
 {
-   mCamera.Zoom(event->angleDelta().y());
+   mCurrentCamera->Zoom(event->angleDelta().y());
 
 }
 void RenderWindow::Tick(float deltaTime)
 {
-    mCamera.Tick(deltaTime);
+    mCurrentCamera->Tick(deltaTime);
 
     if (mSun)
     {
@@ -594,5 +599,14 @@ void RenderWindow::toggleEditorMode()
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
         (*i)->toggleEditorMode();
+    }
+
+    if(mCurrentCamera == &mCamera)
+    {
+        mCurrentCamera = &mCamera2;
+    }
+    else if (mCurrentCamera == &mCamera2)
+    {
+        mCurrentCamera = &mCamera;
     }
 }
