@@ -8,7 +8,11 @@
 
 class MeshGenerator
 {
-//~~~~~~~~~ Cube, Octahedron, Disc, TriangleSurface, Graph
+//~~~~~~~~~ OBJ File, Plane, Grid, Cube, Octahedron, Disc, TriangleSurface, Graph
+
+// OBJ File
+public:     static std::vector<Vertex> OBJFile(const char* fileName, const QVector3D& color);
+public:     static std::vector<Vertex> OBJFile(const char* fileName);
 
 // Plane
 public:     static std::vector<Vertex> Plane(float size);
@@ -29,11 +33,9 @@ private:    static void OctahedronSubDivide(const QVector3D& a, const QVector3D&
 public:     static std::vector<Vertex> Create2DGraph();
 private:    static float SingleVariableFunction(float x);
 
-
 // 3D Graph
 public:     static std::vector<Vertex> Create3DGraph();
 private:    static float MultivariableFunction(float x, float y);
-
 
 // XYZ
 public:     static std::vector<Vertex> XYZ(float length);

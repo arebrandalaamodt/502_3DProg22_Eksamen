@@ -131,7 +131,7 @@ private:
     VisualObject*       mXYZ            {nullptr};
     VisualObject*       Plane           {nullptr};
 
-    InteractiveObject*  Player          {nullptr};
+    InteractiveObject*  mPlayer          {nullptr};
 
     class Heightmap*    HeightmapGround {nullptr};
 

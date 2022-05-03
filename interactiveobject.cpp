@@ -98,7 +98,7 @@ void InteractiveObject::setPosition(float x, float y, float z)
     updateMatrix();
 }
 
-void InteractiveObject::updateMatrix()
-{
-    mMatrix = mPosition * mRotation * mScale;
-}
+//void InteractiveObject::updateMatrix()
+//{
+//    mMatrix = mPosition * mRotation * mScale;
+//}

@@ -1,5 +1,18 @@
+
+#include "OBJFileLoader.h"
 #include "vertex.h"
 #include "meshgenerator.h"
+
+std::vector<Vertex> MeshGenerator::OBJFile(const char* fileName, const QVector3D& color)
+{
+    return OBJFileLoader::loadOBJ(fileName, color);
+}
+
+std::vector<Vertex> MeshGenerator::OBJFile(const char *fileName)
+{
+    return OBJFileLoader::loadOBJ(fileName, QVector3D(0.f, 0.f, 0.f));
+
+}
 
 std::vector<Vertex> MeshGenerator::Plane(float size)
 {

@@ -118,8 +118,8 @@ void RenderWindow::init()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //    mCamera.init(pMatrixUniform0, vMatrixUniform0);
 //    mCamera.SetPosition({10, -10, 10});
-//    mCamera.lookAt(Player->getPosition());
-//    mCamera.setTarget(Player);
+//    mCamera.lookAt(mPlayer->getPosition());
+//    mCamera.setTarget(mPlayer);
 //    mCamera.lookAt(QVector3D{0,0,10},QVector3D{0,0,0}, QVector3D{0,1,0});
 //    mCamera.translate(2, 5, 0);
 //    mCamera.update();
@@ -129,8 +129,8 @@ void RenderWindow::init()
     setupGameObject(); //Sets up every game object
     mCamera.init();
     mCamera.perspective(40, 4.0/3.0, 0.1, 1000.0);
-    mCamera.setTarget(Player);
-    mCamera.SetPosition(Player->getPosition() + QVector3D(50.f, 50.f, 10.f));
+    mCamera.setTarget(mPlayer);
+    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(50.f, 50.f, 10.f));
 
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
@@ -156,12 +156,12 @@ void RenderWindow::setupGameObject()
     mXYZ->setDrawMethod(EDrawMethod::Lines);
     mObjects.push_back(mXYZ);
 
-    Player = new InteractiveObject("Player", MeshGenerator::Octahedron(1));
-    Player->setupShader(mShaderInfo[0]);
-    Player->setPosition(250.f, 250.f, 10.f);
-    Player->mShaderInfo.TextureID = 0;
-    Player->setDrawMethod(EDrawMethod::Triangles);
-    mObjects.push_back (Player);
+    mPlayer = new InteractiveObject("mPlayer", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
+    mPlayer->setupShader(mShaderInfo[2]);
+    mPlayer->setPosition(250.f, 250.f, 10.f);
+    mPlayer->mShaderInfo.TextureID = 2;
+    mPlayer->setDrawMethod(EDrawMethod::Triangles);
+    mObjects.push_back (mPlayer);
 
 //    Plane = new VisualObject("Plane", MeshGenerator::Plane(100.f));
 //    Plane->setupShader(mShaderInfo[2]);
@@ -559,43 +559,43 @@ void RenderWindow::Tick(float deltaTime)
         mSun->progressOrbit();
     }
 
-//    if(Player && mLight)
+//    if(mPlayer && mLight)
 //    {
 //        mLight->mMatrix.translate({0.1f, 0, 0});
 //        mLight->mMatrix.rotate(1, {0, 0, 1});
 //        mLight->mMatrix.setToIdentity();
 
-//        QVector3D playerPos = Player->getPosition();
-//        playerPos.setZ(playerPos.z()+10.f);
-//        mLight->mMatrix.translate(playerPos);
+//        QVector3D mPlayerPos = mPlayer->getPosition();
+//        mPlayerPos.setZ(mPlayerPos.z()+10.f);
+//        mLight->mMatrix.translate(mPlayerPos);
 //    }
 
 
-    if (Player)
+    if (mPlayer)
     {
         if (mCurrentInputs[Qt::Key_W])
         {
-            Player->MoveForward(1);
+            mPlayer->MoveForward(1);
         }
         if (mCurrentInputs[Qt::Key_S])
         {
-            Player->MoveForward(-1);
+            mPlayer->MoveForward(-1);
         }
         if (mCurrentInputs[Qt::Key_D])
         {
-            Player->MoveRight(-1);
+            mPlayer->MoveRight(-1);
         }
         if (mCurrentInputs[Qt::Key_A])
         {
-            Player->MoveRight(1);
+            mPlayer->MoveRight(1);
         }
         if (mCurrentInputs[Qt::Key_E])
         {
-            Player->move(0.f, 0.f, 1.f);
+            mPlayer->move(0.f, 0.f, 1.f);
         }
         if (mCurrentInputs[Qt::Key_Q])
         {
-            Player->move(0.f, 0.f, -1.f);
+            mPlayer->move(0.f, 0.f, -1.f);
         }
     }
 //    mCamera.translate(1.f, 0, 0);

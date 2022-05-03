@@ -9,6 +9,7 @@ SOURCES += main.cpp \
     heightmap.cpp \
     light.cpp \
     meshgenerator.cpp \
+    player.cpp \
     sun.cpp \
     texture.cpp \
     triangle.cpp \
@@ -25,9 +26,11 @@ SOURCES += main.cpp \
     visualobject.cpp
 
 HEADERS += \
+    OBJFileLoader.h \
     heightmap.h \
     light.h \
     meshgenerator.h \
+    player.h \
     sun.h \
     texture.h \
     triangle.h \

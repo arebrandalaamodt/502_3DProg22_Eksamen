@@ -42,7 +42,7 @@ public:
     float mx, my, mz {0.f}; // posisjon
 
 
-    void updateMatrix();
+//    void updateMatrix() override;
 };
 
 #endif // INTERACTIVEOBJECT_H
