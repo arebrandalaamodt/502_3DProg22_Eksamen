@@ -78,23 +78,26 @@ protected:
 
 //////////////////////////////////////////////
 protected:
-   std::vector<Vertex> mVertices;
-   GLuint mVAO{0};
-   GLuint mVBO{0};
+    std::vector<Vertex> mVertices;
+    GLuint mVAO{0};
+    GLuint mVBO{0};
 
-   float mx, my, mz {0.f};
+    float mx, my, mz {0.f};
 
-   std::string mName{"Default"};
-   void setName(std::string name);
-   std::string getName();
+    std::string mName{"Default"};
+    void setName(std::string name);
+    std::string getName();
 
-   void setDrawMethod(EDrawMethod method) {mDrawMethod = method;}
-   EDrawMethod mDrawMethod {EDrawMethod::Triangles};
+    void setDrawMethod(EDrawMethod method) {mDrawMethod = method;}
+    EDrawMethod mDrawMethod {EDrawMethod::Triangles};
 
-   ShaderInfo mShaderInfo;
-   void setupShader(ShaderInfo shaderInfo) {mShaderInfo = shaderInfo;}
+    ShaderInfo mShaderInfo;
+    void setupShader(ShaderInfo shaderInfo) {mShaderInfo = shaderInfo;}
 
-
+    bool bEditorOnlyRender {false};
+    bool bShouldBeRendered {true};
+    bool bEditorMode       {true};
+    void toggleEditorMode();
 
 
 //   void setMatrix(GLint* matrixToSet) {mMatrixUniform = matrixToSet;}

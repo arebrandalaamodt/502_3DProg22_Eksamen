@@ -113,3 +113,19 @@ std::string VisualObject::getName()
 {
     return mName;
 }
+
+void VisualObject::toggleEditorMode()
+{
+    bEditorMode = !bEditorMode;
+    if (bEditorOnlyRender)
+    {
+        if(bEditorMode == true)
+        {
+            bShouldBeRendered = true;
+        }
+        else if (bEditorMode == false)
+        {
+            bShouldBeRendered = false;
+        }
+    }
+}

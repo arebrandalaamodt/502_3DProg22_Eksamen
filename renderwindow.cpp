@@ -130,7 +130,7 @@ void RenderWindow::init()
     mCamera.init();
     mCamera.perspective(40, 4.0/3.0, 0.1, 1000.0);
     mCamera.setTarget(mPlayer);
-    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(50.f, 50.f, 10.f));
+    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 40.f));
 
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
@@ -139,6 +139,8 @@ void RenderWindow::init()
 
     glUseProgram(mShaderProgram[0]->getProgram());            //what shader to use
 
+
+    mPlayer->MoveForward(0.1f);
 
     glBindVertexArray(0);       //unbinds any VertexArray - good practice
 
@@ -154,6 +156,7 @@ void RenderWindow::setupGameObject()
     mXYZ->setupShader(mShaderInfo[0]);
     mXYZ->mShaderInfo.TextureID = 0;
     mXYZ->setDrawMethod(EDrawMethod::Lines);
+    mXYZ->bEditorOnlyRender = true;
     mObjects.push_back(mXYZ);
 
     mPlayer = new InteractiveObject("mPlayer", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
@@ -162,6 +165,7 @@ void RenderWindow::setupGameObject()
     mPlayer->mShaderInfo.TextureID = 2;
     mPlayer->setDrawMethod(EDrawMethod::Triangles);
     mObjects.push_back (mPlayer);
+//    mPlayer->MoveForward(0.0f);
 
 //    Plane = new VisualObject("Plane", MeshGenerator::Plane(100.f));
 //    Plane->setupShader(mShaderInfo[2]);
@@ -176,6 +180,7 @@ void RenderWindow::setupGameObject()
     HeightmapGround->mShaderInfo.TextureID = 3;
     HeightmapGround->setDrawMethod(EDrawMethod::Triangles);
     mObjects.push_back (HeightmapGround);
+//    HeightmapGround->bShouldBeRendered = false;
 
     //Oppgave 1
 //    mLight = new Light();
@@ -196,6 +201,7 @@ void RenderWindow::setupGameObject()
     mObjects.push_back (mSun);
 
 
+
 }
 
 void RenderWindow::setupPlainShader(int shaderIndex)
@@ -213,7 +219,6 @@ void RenderWindow::setupPlainShader(int shaderIndex)
 
     mShaderInfo[shaderIndex]                = tempShaderInfo;
 }
-
 void RenderWindow::setupTextureShader(int shaderIndex)
 {
     mMatrixUniform1     = glGetUniformLocation( mShaderProgram[shaderIndex]->getProgram(), "mMatrix" );
@@ -233,7 +238,6 @@ void RenderWindow::setupTextureShader(int shaderIndex)
 
     mShaderInfo[shaderIndex]                = tempShaderInfo;
 }
-
 void RenderWindow::setupPhongShader(int shaderIndex)
 {
     mMatrixUniform2                 = glGetUniformLocation( mShaderProgram[shaderIndex]->getProgram(), "mMatrix" );
@@ -275,76 +279,68 @@ void RenderWindow::render()
     time2 = std::chrono::system_clock::now();
     Tick(duration.count() / 1000);
 
-//    glUniform3f(mLightPositionUniform, mLight->mMatrix.column(3).x(), mLight->mMatrix.column(3).y(),mLight->mMatrix.column(3).z());
-//    glUniform3f(mCameraPositionUniform, mCamera.GetPosition().x(), mCamera.GetPosition().y(), mCamera.GetPosition().z());
-//    glUniform3f(mLightColorUniform, mLight->mLightColor.x(), mLight->mLightColor.y(), mLight->mLightColor.z());
-//    glUniform1f(mSpecularStrengthUniform, mLight->mSpecularStrenght);
-
-
-
     //~~ Draw
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
-        if ((*i)->mShaderInfo.TextureUniform != nullptr)
+        if((*i)->bShouldBeRendered == true)
         {
-            glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
-        }
-        if((*i)->mShaderInfo.Shader == mShaderInfo[0].Shader)
-        {
-//            std::cout << (*i)->getName() << "'s Shader ID = 0" << std::endl;
+            if((*i)->mShaderInfo.Shader == mShaderInfo[0].Shader)
+            {
+    //            std::cout << (*i)->getName() << "'s Shader ID = 0" << std::endl;
 
-            glUseProgram((*i)->mShaderInfo.Shader->getProgram());
+                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
 
-            glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
-//                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
+                glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
+    //                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
 
-            mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
-            (*i)->draw();
-        }
-        else if((*i)->mShaderInfo.Shader == mShaderInfo[1].Shader)
-        {
-//            std::cout << (*i)->getName() << "'s Shader ID = 1" << std::endl;
+                mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
+                (*i)->draw();
+            }
+            else if((*i)->mShaderInfo.Shader == mShaderInfo[1].Shader)
+            {
+    //            std::cout << (*i)->getName() << "'s Shader ID = 1" << std::endl;
 
-            glUseProgram((*i)->mShaderInfo.Shader->getProgram());
+                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
 
-            glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
-//                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
+                glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
+    //                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
 
-            glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
+                glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
 
-//                glActiveTexture(GL_TEXTURE1);
+    //                glActiveTexture(GL_TEXTURE1);
 
-            mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
-            (*i)->draw();
-        }
-        else if((*i)->mShaderInfo.Shader == mShaderInfo[2].Shader)
-        {
+                mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
+                (*i)->draw();
+            }
+            else if((*i)->mShaderInfo.Shader == mShaderInfo[2].Shader)
+            {
 
-//            std::cout << (*i)->getName() << "'s Shader ID = 2" << std::endl;
-            glUseProgram((*i)->mShaderInfo.Shader->getProgram());
-//            std::cout << (*i)->getName() << "| 001" << std::endl;
-            glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
-//            std::cout << (*i)->getName() << "| 002" << std::endl;
-            glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
-//            std::cout << (*i)->getName() << "| 003" << std::endl;
-//            std::cout << (*i)->getName() << "| 004" << std::endl;
-            glUniform3f(mLightPositionUniform, mSun->mMatrix.column(3).x(), mSun->mMatrix.column(3).y(),mSun->mMatrix.column(3).z());
-//            std::cout << (*i)->getName() << "| 005" << std::endl;
-            glUniform3f(mCameraPositionUniform, mCamera.GetPosition().x(), mCamera.GetPosition().y(), mCamera.GetPosition().z());
-//            std::cout << (*i)->getName() << "| 006" << std::endl;
-            glUniform3f(mLightColorUniform, mSun->mLightColor.x(), mSun->mLightColor.y(), mSun->mLightColor.z());
-//            std::cout << (*i)->getName() << "| 007" << std::endl;
-            glUniform1f(mSpecularStrengthUniform, mSun->mSpecularStrenght);
-//            std::cout << (*i)->getName() << "| 008" << std::endl;
+    //            std::cout << (*i)->getName() << "'s Shader ID = 2" << std::endl;
+                glUseProgram((*i)->mShaderInfo.Shader->getProgram());
+    //            std::cout << (*i)->getName() << "| 001" << std::endl;
+                glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
+    //            std::cout << (*i)->getName() << "| 002" << std::endl;
+                glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
+    //            std::cout << (*i)->getName() << "| 003" << std::endl;
+    //            std::cout << (*i)->getName() << "| 004" << std::endl;
+                glUniform3f(mLightPositionUniform, mSun->mMatrix.column(3).x(), mSun->mMatrix.column(3).y(),mSun->mMatrix.column(3).z());
+    //            std::cout << (*i)->getName() << "| 005" << std::endl;
+                glUniform3f(mCameraPositionUniform, mCamera.GetPosition().x(), mCamera.GetPosition().y(), mCamera.GetPosition().z());
+    //            std::cout << (*i)->getName() << "| 006" << std::endl;
+                glUniform3f(mLightColorUniform, mSun->mLightColor.x(), mSun->mLightColor.y(), mSun->mLightColor.z());
+    //            std::cout << (*i)->getName() << "| 007" << std::endl;
+                glUniform1f(mSpecularStrengthUniform, mSun->mSpecularStrenght);
+    //            std::cout << (*i)->getName() << "| 008" << std::endl;
 
-            mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
-            (*i)->draw();
-//            std::cout << (*i)->getName() << "| 009" << std::endl;
+                mCamera.update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
+                (*i)->draw();
+    //            std::cout << (*i)->getName() << "| 009" << std::endl;
 
-        }
-        else
-        {
-            std::cout << "Shader ID invalid" << std::endl;
+            }
+            else
+            {
+                std::cout << "Shader ID invalid" << std::endl;
+            }
         }
 
     }
@@ -512,17 +508,11 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     }
     if (event->key() == Qt::Key_T)
     {
-//        std::unordered_map<int, bool>::iterator inputIterator;
+        for (auto i = mObjects.begin(); i != mObjects.end(); i++)
+        {
+            (*i)->toggleEditorMode();
+        }
 
-//        for (inputIterator = mCurrentInputs.begin(); inputIterator != mCurrentInputs.end(); inputIterator++)
-//        {
-//            std::cout << (char)(inputIterator->first) << " : " << inputIterator->second << std::endl;
-//        }
-
-//        for (auto const& [key, val] : mCurrentInputs)
-//        {
-//            std::cout << key << " : " << val << std::endl;
-//        }
     }
 
 

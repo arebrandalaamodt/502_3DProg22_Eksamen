@@ -131,12 +131,16 @@ private:
     VisualObject*       mXYZ            {nullptr};
     VisualObject*       Plane           {nullptr};
 
-    InteractiveObject*  mPlayer          {nullptr};
+    InteractiveObject*  mPlayer         {nullptr};
 
     class Heightmap*    HeightmapGround {nullptr};
 
     class Light*        mLight          {nullptr};
     class Sun*          mSun            {nullptr};
+
+
+    bool bIsEditorModeEnabled           {true};
+
 
 //    VisualObject*  mOctahedronBall      {nullptr};
 //    VisualObject*  mTest                {nullptr};
