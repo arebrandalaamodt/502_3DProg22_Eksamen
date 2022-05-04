@@ -9,10 +9,10 @@ SOURCES += main.cpp \
     heightmap.cpp \
     light.cpp \
     meshgenerator.cpp \
-    player.cpp \
     sun.cpp \
     texture.cpp \
     triangle.cpp \
+    trophy.cpp \
     vertex.cpp \
     camera.cpp \
     graph.cpp \
@@ -30,10 +30,10 @@ HEADERS += \
     heightmap.h \
     light.h \
     meshgenerator.h \
-    player.h \
     sun.h \
     texture.h \
     triangle.h \
+    trophy.h \
     vertex.h \
     camera.h \
     graph.h \

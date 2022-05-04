@@ -142,6 +142,9 @@ private:
 
     NPC*                mNPC1               {nullptr};
 
+    class Trophy*       mTrophy             {nullptr};
+    std::vector<Trophy*> mTrophies;
+    QVector3D           mSceneOrigo         {250.f, 250.f, 10.f};
 
     class Heightmap*    HeightmapGround     {nullptr};
 
@@ -150,6 +153,7 @@ private:
 
 
     bool bIsEditorModeEnabled               {true};
+    int mNumberOfTrophiesGathered {0};
 
 public:
     void toggleEditorMode();

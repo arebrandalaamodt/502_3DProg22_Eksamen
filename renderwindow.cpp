@@ -15,6 +15,7 @@
 #include "mainwindow.h"
 #include "logger.h"
 //~~
+#include "trophy.h"
 #include "vertex.h"
 #include "sun.h"
 #include "light.h"
@@ -153,9 +154,6 @@ void RenderWindow::init()
 
 void RenderWindow::setupGameObject()
 {
-    //~~
-//    mXYZ = new VisualObject("XYZ", MeshGenerator::XYZ(100.f));
-
     mXYZ = new VisualObject("XYZ", MeshGenerator::XYZ(500.f));
     mXYZ->setupShader(mShaderInfo[0]);
     mXYZ->mShaderInfo.TextureID = 0;
@@ -201,13 +199,6 @@ void RenderWindow::setupGameObject()
     mObjects.push_back (HeightmapGround);
 //    HeightmapGround->bShouldBeRendered = false;
 
-    //Oppgave 1
-//    mLight = new Light();
-//    mLight->setupShader(mShaderInfo[2]);
-//    mLight->mShaderInfo.TextureID = 3;
-//    mLight->setDrawMethod(EDrawMethod::Triangles);
-//    mLight->move(.1f, .1f, 5.f);
-//    mObjects.push_back (mLight);
 
     //Oppgave 2
     mSun = new Sun();
@@ -229,6 +220,7 @@ void RenderWindow::setupGameObject()
     mBezierCurve->mShaderInfo.TextureID = 0;
     mBezierCurve->setDrawMethod(EDrawMethod::Lines);
     mBezierCurve->setPosition(QVector3D(250.f, 250.f, 20.f));
+    mBezierCurve->bEditorOnlyRender = true;
 //    mXYZ->bEditorOnlyRender = false;
     mObjects.push_back(mBezierCurve);
 
@@ -238,10 +230,34 @@ void RenderWindow::setupGameObject()
     mNPC1->mShaderInfo.TextureID = 0;
 
     mNPC1->setPatrolPathObject(mBezierCurve);
-
-
-
     mObjects.push_back(mNPC1);
+
+    //Oppgave 7
+
+
+    bool bRedTeam = true;
+    for (int i = 0; i < 2; i++)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            std::cout << "bRedTeam: " << bRedTeam << std::endl;
+            mTrophy = new Trophy(bRedTeam);
+            mTrophy->setupShader(mShaderInfo[0]);
+            mTrophy->mShaderInfo.TextureID = 0;
+
+            std::string name = "trophy" + std::to_string(i);
+            mTrophy->setName(name);
+
+            float randX = (rand() % 100) + mSceneOrigo.x();
+            float randY = (rand() % 100) + mSceneOrigo.y();
+
+            mTrophy->move(randX, randY, 5.f);
+            mObjects.push_back(mTrophy);
+            mTrophies.push_back(mTrophy);
+        }
+        bRedTeam = false;
+    }
+
 
 }
 
@@ -596,11 +612,11 @@ void RenderWindow::Tick(float deltaTime)
         }
         if (mCurrentInputs[Qt::Key_D])
         {
-            mPlayer->RotateRight(.2f);
+            mPlayer->RotateRight(.4f);
         }
         if (mCurrentInputs[Qt::Key_A])
         {
-            mPlayer->RotateRight(-.2f);
+            mPlayer->RotateRight(-.4f);
         }
     }
     else if (mEditorModeTarget && mCurrentCamera == &mCamera2)
@@ -630,6 +646,42 @@ void RenderWindow::Tick(float deltaTime)
             mEditorModeTarget->move(0.f, 0.f, -1.f);
         }
     }
+
+    static float secondCounter;
+    secondCounter += .2f;
+    if (secondCounter > 1.f)
+    {
+        secondCounter = 0;
+
+        if(mPlayer)
+        {
+            QVector3D tempPlayerLoc = mPlayer->getPosition();
+            for(int i = 0; i < mTrophies.size(); i++)
+            {
+                if(mTrophies.at(i)->getIsRed() && mTrophies.at(i)->getIsTaken() == false)
+                {
+                    QVector3D tempTrophyLoc = mTrophies.at(i)->getPosition();
+                    if (
+                            (tempPlayerLoc.x() - tempTrophyLoc.x() < 3.f && (tempPlayerLoc.x() - tempTrophyLoc.x() > -3.f))
+                         && (tempPlayerLoc.y() - tempTrophyLoc.y() < 3.f && (tempPlayerLoc.y() - tempTrophyLoc.y() > -3.f))
+                        )
+                    {
+                        mTrophies.at(i)->bShouldBeRendered = false;
+                        mTrophies.at(i)->setIsTaken(true);
+                        mNumberOfTrophiesGathered++;
+                        if(mNumberOfTrophiesGathered > 9)
+                        {
+                            std::cout << "YOU WIN!!!" << std::endl;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
 //    mCamera.translate(1.f, 0, 0);
 
 //    static float deletemeTest = 0.0f;

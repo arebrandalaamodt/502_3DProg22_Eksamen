@@ -102,7 +102,7 @@ void InteractiveObject::RotateRight(float value)
 {
     QVector3D forwardOrigo = GetForward();
 
-    std::cout << "forwardOrigo x: " << forwardOrigo.x() << " | y: " << forwardOrigo.y() << std::endl;
+//    std::cout << "forwardOrigo x: " << forwardOrigo.x() << " | y: " << forwardOrigo.y() << std::endl;
 
     float tempX {0};
     float tempY {0};
