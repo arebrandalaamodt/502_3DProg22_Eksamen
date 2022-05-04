@@ -59,9 +59,9 @@ private:
     bool bIsEditorCamera {true};
 public:
     void Zoom(float diff);
-//    void MoveForward(float value);
-//    void MoveRight(float value);
-//    void MoveUp(float value);
+    void MoveForward(float value);
+    void MoveRight(float value);
+    void MoveUp(float value);
 
 
 //~//

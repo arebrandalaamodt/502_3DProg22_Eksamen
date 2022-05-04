@@ -11,11 +11,9 @@ SOURCES += main.cpp \
     meshgenerator.cpp \
     sun.cpp \
     texture.cpp \
-    triangle.cpp \
     trophy.cpp \
     vertex.cpp \
     camera.cpp \
-    graph.cpp \
     interactiveobject.cpp \
     logger.cpp \
     mainwindow.cpp \
@@ -32,11 +30,9 @@ HEADERS += \
     meshgenerator.h \
     sun.h \
     texture.h \
-    triangle.h \
     trophy.h \
     vertex.h \
     camera.h \
-    graph.h \
     interactiveobject.h \
     logger.h \
     mainwindow.h \

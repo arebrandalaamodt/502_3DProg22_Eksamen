@@ -7,16 +7,10 @@
 #include <QElapsedTimer>
 
 //~
-//#include "vertex.h"
 #include "visualobject.h"
 #include "interactiveobject.h"
 #include "camera.h"
-#include "graph.h"
 #include "npc.h"
-
-
-#include "triangle.h"
-
 #include "shader.h"
 #include "texture.h"
 

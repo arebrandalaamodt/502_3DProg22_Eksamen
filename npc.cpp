@@ -19,9 +19,7 @@ void NPC::setPatrolPathObject(VisualObject* objectToSet)
 
     if (patrolPathObject)
     {
-        std::cout << "patrolPathObject true " << std::endl;
         patrolPathLocation = patrolPathObject->getPosition();
-        std::cout << "patrolPathLocation | x | = " << patrolPathLocation.x() << " | y | = " << patrolPathLocation.y() << " | z | " << patrolPathLocation.z() << std::endl;
     }
 }
 
@@ -37,10 +35,7 @@ void NPC::fillBezierVertices()
     {
         bezierVertices.push_back(MeshGenerator::fourPointBezierCurveCalc(v0, v1, v2, v3, x));
     }
-
     sizeOfBezierVertices = bezierVertices.size() - 1;
-    std::cout << "sizeOfBezierVertices = " << sizeOfBezierVertices << std::endl;
-
 }
 
 void NPC::patrol()
@@ -70,11 +65,4 @@ void NPC::patrol()
         }
     }
 }
-
-//void NPC::setPosition(float x, float y, float z)
-//{
-////    mMatrix.translate(0,0,0);
-////    mMatrix.
-//}
-
 

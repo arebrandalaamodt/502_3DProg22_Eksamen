@@ -78,8 +78,6 @@ void RenderWindow::init()
     mLogger->logText(tempString);
     startOpenGLDebugger();  //Start the Qt OpenGL debugger      //Really helpfull when doing OpenGL     //Supported on most Windows machines - at least with NVidia GPUs    //reverts to plain glGetError() on Mac and other unsupported PCs
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
     //general OpenGL stuff:
     glEnable(GL_DEPTH_TEST);            //enables depth sorting - must then use GL_DEPTH_BUFFER_BIT in glClear
 //    glEnable(GL_CULL_FACE);       //draws only front side of models - usually what you want - test it out!
@@ -113,22 +111,16 @@ void RenderWindow::init()
     glBindTexture(GL_TEXTURE_2D, mTexture[2]->id());
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, mTexture[3]->id());
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    mCamera.init(pMatrixUniform0, vMatrixUniform0);
-//    mCamera.SetPosition({10, -10, 10});
-//    mCamera.lookAt(mPlayer->getPosition());
-//    mCamera.setTarget(mPlayer);
-//    mCamera.lookAt(QVector3D{0,0,10},QVector3D{0,0,0}, QVector3D{0,1,0});
-//    mCamera.translate(2, 5, 0);
-//    mCamera.update();
-    //~
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    setupGameObject(); //Sets up every game object
+    // Oppgave 5 // Primært kamera brukes til Play mode
+    setupGameObject();
     mCamera.init();
     mCamera.perspective(40, 4.0/3.0, 0.1, 1000.0);
     mCamera.setTarget(mPlayer);
     mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 50.f));
 
+    // Oppgave 5 // Sekundært kamera brukes til Editor Mode,
     mCamera2.init();
     mCamera2.perspective(40, 4.0/3.0, 0.1, 1000.0);
     mCamera2.setIsEditorCamera(false);
@@ -142,7 +134,7 @@ void RenderWindow::init()
         (*i)->init();
     }
 
-    glUseProgram(mShaderProgram[0]->getProgram());            //what shader to use
+    glUseProgram(mShaderProgram[0]->getProgram());
 
 
     mPlayer->MoveForward(0.1f);
@@ -154,53 +146,49 @@ void RenderWindow::init()
 
 void RenderWindow::setupGameObject()
 {
+    // Hvert object instansieres her med en ShaderInfo "pakke" som siden..
+    // blir brukt til å hente ut relevant informasjon for hvordan objektet skal rendres.
+    //
+    // ShaderInfo pakkene blir laget i setupShader()-funksjonene over.
+    //
+    // ShaderInfo struct ligger i VisualObject
+
+    // Oppgave 5 // Eksempel på editorOnly object som bare rendres i editor mode.
     mXYZ = new VisualObject("XYZ", MeshGenerator::XYZ(500.f));
     mXYZ->setupShader(mShaderInfo[0]);
     mXYZ->mShaderInfo.TextureID = 0;
     mXYZ->setDrawMethod(EDrawMethod::Lines);
     mXYZ->bEditorOnlyRender = true;
+    mXYZ->setPosition(mSceneOrigo);
     mObjects.push_back(mXYZ);
 
+    // Oppgave 4
     mPlayer = new InteractiveObject("Player", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
     mPlayer->setupShader(mShaderInfo[2]);
     mPlayer->setPosition(250.f, 250.f, 10.f);
     mPlayer->mShaderInfo.TextureID = 2;
     mPlayer->setDrawMethod(EDrawMethod::Triangles);
-
-//    mPlayer->setHeight(200.f);
     mPlayer->setScale(3.f);
     mObjects.push_back (mPlayer);
 
+    // Oppgave 5 & 6
     mEditorModeTarget = new InteractiveObject("EditorModeTarget", MeshGenerator::OBJFile("../3Dprog22/Assets/camera.obj"));
     mEditorModeTarget->setupShader(mShaderInfo[2]);
     mEditorModeTarget->setPosition(250.f, 250.f, 10.f);
     mEditorModeTarget->mShaderInfo.TextureID = 2;
     mEditorModeTarget->setDrawMethod(EDrawMethod::Triangles);
     mEditorModeTarget->bEditorOnlyRender = true;
-
-//    mEditorModeTarget->setHeight(200.f);
     mObjects.push_back (mEditorModeTarget);
-//    mPlayer->MoveForward(0.0f);
 
-//    Plane = new VisualObject("Plane", MeshGenerator::Plane(100.f));
-//    Plane->setupShader(mShaderInfo[2]);
-//    Plane->mShaderInfo.TextureID = 3;
-//    Plane->setDrawMethod(EDrawMethod::Triangles);
-//    mObjects.push_back (Plane);
-
-    //Oppgave 1, 3
+    // Oppgave 2 // Følger oppgave-tall logikk der oppgave 1 er å lage et tomt repo.
     HeightmapGround = new Heightmap("../3Dprog22/Assets/EksamenHeightmap.bmp", 40, 1.f, 1);
     HeightmapGround->setName("Heightmap");
     HeightmapGround->setupShader(mShaderInfo[2]);
     HeightmapGround->mShaderInfo.TextureID = 3;
     HeightmapGround->setDrawMethod(EDrawMethod::Triangles);
-//    HeightmapGround->bEditorOnlyRender = true;
-
     mObjects.push_back (HeightmapGround);
-//    HeightmapGround->bShouldBeRendered = false;
 
-
-    //Oppgave 2
+    // Oppgave 3
     mSun = new Sun();
     mSun->setVertices(MeshGenerator::Octahedron(1));
     mSun->setName("Sun");
@@ -211,7 +199,7 @@ void RenderWindow::setupGameObject()
     mSun->mLightStrenght = 200.f;
     mObjects.push_back (mSun);
 
-    //Oppgave 6
+    //Oppgave 7
     mBezierCurve = new VisualObject("BezierCurve", MeshGenerator::FourPointBezierCurve(Vertex(10,10,10,1,0,1),
                                                                                        Vertex(30,20,10,1,0,1),
                                                                                        Vertex(40,10,10,1,0,1),
@@ -220,37 +208,28 @@ void RenderWindow::setupGameObject()
     mBezierCurve->mShaderInfo.TextureID = 0;
     mBezierCurve->setDrawMethod(EDrawMethod::Lines);
     mBezierCurve->setPosition(QVector3D(250.f, 250.f, 20.f));
-    mBezierCurve->bEditorOnlyRender = true;
-//    mXYZ->bEditorOnlyRender = false;
     mObjects.push_back(mBezierCurve);
 
-    //Oppgave 6
+    //Oppgave 7
     mNPC1 = new NPC("NPC1", MeshGenerator::Cube());
     mNPC1->setupShader(mShaderInfo[0]);
     mNPC1->mShaderInfo.TextureID = 0;
-
     mNPC1->setPatrolPathObject(mBezierCurve);
     mObjects.push_back(mNPC1);
 
-    //Oppgave 7
-
-
+    //Oppgave 8
     bool bRedTeam = true;
     for (int i = 0; i < 2; i++)
     {
         for (int i = 0; i < 10; i++)
         {
-            std::cout << "bRedTeam: " << bRedTeam << std::endl;
             mTrophy = new Trophy(bRedTeam);
             mTrophy->setupShader(mShaderInfo[0]);
             mTrophy->mShaderInfo.TextureID = 0;
-
             std::string name = "trophy" + std::to_string(i);
             mTrophy->setName(name);
-
             float randX = (rand() % 100) + mSceneOrigo.x();
             float randY = (rand() % 100) + mSceneOrigo.y();
-
             mTrophy->move(randX, randY, 5.f);
             mObjects.push_back(mTrophy);
             mTrophies.push_back(mTrophy);
@@ -336,7 +315,7 @@ void RenderWindow::render()
     time2 = std::chrono::system_clock::now();
     Tick(duration.count() / 1000);
 
-    //~~ Draw
+    //~~ Draw // Har satt opp her en loop som sjekker hvilken shader hvert object er spesifisert at skal bruke
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
         if((*i)->bShouldBeRendered == true)
@@ -358,28 +337,16 @@ void RenderWindow::render()
             }
             else if((*i)->mShaderInfo.Shader == mShaderInfo[2].Shader)
             {
-
-    //            std::cout << (*i)->getName() << "'s Shader ID = 2" << std::endl;
                 glUseProgram((*i)->mShaderInfo.Shader->getProgram());
-    //            std::cout << (*i)->getName() << "| 001" << std::endl;
                 glUniformMatrix4fv(*(*i)->mShaderInfo.MatrixUniform, 1, GL_FALSE, (*i)->mMatrix.constData());
-    //            std::cout << (*i)->getName() << "| 002" << std::endl;
                 glUniform1i(*(*i)->mShaderInfo.TextureUniform, (*i)->mShaderInfo.TextureID);
-    //            std::cout << (*i)->getName() << "| 003" << std::endl;
-    //            std::cout << (*i)->getName() << "| 004" << std::endl;
                 glUniform3f(mLightPositionUniform, mSun->mMatrix.column(3).x(), mSun->mMatrix.column(3).y(),mSun->mMatrix.column(3).z());
-    //            std::cout << (*i)->getName() << "| 005" << std::endl;
                 glUniform3f(mCameraPositionUniform, mCamera.GetPosition().x(), mCamera.GetPosition().y(), mCamera.GetPosition().z());
-    //            std::cout << (*i)->getName() << "| 006" << std::endl;
                 glUniform3f(mLightColorUniform, mSun->mLightColor.x(), mSun->mLightColor.y(), mSun->mLightColor.z());
-    //            std::cout << (*i)->getName() << "| 007" << std::endl;
                 glUniform1f(mSpecularStrengthUniform, mSun->mSpecularStrenght);
-    //            std::cout << (*i)->getName() << "| 008" << std::endl;
 
                 mCurrentCamera->update(*(*i)->mShaderInfo.ProjectionMatrixUniform, *(*i)->mShaderInfo.ViewMatrixUniform);
                 (*i)->draw();
-    //            std::cout << (*i)->getName() << "| 009" << std::endl;
-
             }
             else
             {
@@ -506,17 +473,11 @@ void RenderWindow::startOpenGLDebugger()
 void RenderWindow::mousePressEvent(QMouseEvent *event)
 {
     mCurrentInputs[event->button()] = true;
-//    if (event->button() == Qt::LeftButton) {
-//        mCamera.setStatus(true);
-//    }
 }
 
 void RenderWindow::mouseReleaseEvent(QMouseEvent *event)
 {
     mCurrentInputs[event->button()] = false;
-//    if (event->button() == Qt::LeftButton) {
-//        mCamera.setStatus(false);
-//    }
 }
 
 void RenderWindow::mouseMoveEvent(QMouseEvent *event)
@@ -541,59 +502,41 @@ void RenderWindow::mouseMoveEvent(QMouseEvent *event)
 void RenderWindow::keyPressEvent(QKeyEvent *event)
 {
     mCurrentInputs[event->key()] = true;
-
-
-
     if (event->key() == Qt::Key_Escape)
     {
         mMainWindow->close();       //Shuts down the whole program
-
-
     }
     if (event->key() == Qt::Key_T)
     {
         toggleEditorMode();
     }
-
-
 }
 void RenderWindow::keyReleaseEvent(QKeyEvent *event)
 {
-//    mCurrentInputs.erase(event->key());
     mCurrentInputs[event->key()] = false;
-
-//    std::unordered_map<int, bool>::iterator inputIterator;
-
-//    for (inputIterator = mCurrentInputs.begin(); inputIterator != mCurrentInputs.end(); inputIterator++)
-//    {
-//        std::cout << inputIterator->first << " : " << inputIterator->second << std::endl;
-//    }
-
-//    for (auto const& [key, val] : mCurrentInputs)
-//    {
-//        std::cout << key << " : " << val << std::endl;
-//    }
 }
 
 void RenderWindow::wheelEvent(QWheelEvent *event)
 {
    mCurrentCamera->Zoom(event->angleDelta().y());
-
 }
+
 void RenderWindow::Tick(float deltaTime)
 {
     mCurrentCamera->Tick(deltaTime);
 
+    // Oppgave 3
     if (mSun)
     {
         mSun->progressOrbit();
     }
+    // Oppgave 7
     if (mNPC1)
     {
         mNPC1->patrol();
     }
 
-    //Oppgave 3
+    // Oppgave 2
     if(mPlayer)
     {
         QVector3D playerPos = mPlayer->getPosition();
@@ -647,6 +590,7 @@ void RenderWindow::Tick(float deltaTime)
         }
     }
 
+    // Oppgave 8 // Trofeer som blir plukket opp blir satt til å ikke rendre, og win condition checkes også.
     static float secondCounter;
     secondCounter += .2f;
     if (secondCounter > 1.f)
@@ -672,24 +616,13 @@ void RenderWindow::Tick(float deltaTime)
                         if(mNumberOfTrophiesGathered > 9)
                         {
                             std::cout << "YOU WIN!!!" << std::endl;
+                            mLogger->logText("YOU WIN!!!");
                         }
                     }
                 }
             }
         }
     }
-
-
-
-
-//    mCamera.translate(1.f, 0, 0);
-
-//    static float deletemeTest = 0.0f;
-//    deletemeTest -= .01f;
-
-//    mCamera.SetPosition(QVector3D{deletemeTest,deletemeTest, deletemeTest});
-
-    //    mCamera.translate(0,0,deletemeTest);
 }
 
 void RenderWindow::toggleEditorMode()

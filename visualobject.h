@@ -6,16 +6,6 @@
 #include <vector>
 #include "vertex.h"
 
-//#define GL_POINTS                         0x0000
-//#define GL_LINES                          0x0001
-//#define GL_LINE_LOOP                      0x0002
-//#define GL_LINE_STRIP                     0x0003
-//#define GL_TRIANGLES                      0x0004
-//#define GL_TRIANGLE_STRIP                 0x0005
-//#define GL_TRIANGLE_FAN                   0x0006
-//#define GL_QUADS                          0x0007
-//#define GL_QUAD_STRIP                     0x0008
-//#define GL_POLYGON                        0x0009
 
 struct UV
 {
@@ -37,9 +27,7 @@ struct ShaderInfo{
 
     GLint* TextureUniform               {nullptr};
 
-
     GLint TextureID {0};
-
 };
 
 
@@ -56,17 +44,12 @@ public:
     virtual void move(float dt) { };
     virtual void move(const QVector3D& xyz) { };
 
-
     virtual QVector3D getPosition();
     virtual void setPosition (const QVector3D positionToSet);
-//    virtual void setPosition(float x, float y, float z);
-
-//    virtual void getPosition();
 
     virtual void updateMatrix();
 
     virtual void setMonoColor(QVector3D colorToSet);
-
 
     virtual void setVertices(std::vector<Vertex> vertices) {mVertices = vertices; }
 
@@ -76,9 +59,7 @@ protected:
    QMatrix4x4 mPosition;
    QMatrix4x4 mRotation;
    QMatrix4x4 mScale;
-//   QVector3D mVelocity{0.1f, 0.f, 0.f};
 
-//////////////////////////////////////////////
 protected:
     std::vector<Vertex> mVertices;
     GLuint mVAO{0};
@@ -104,10 +85,6 @@ protected:
     QVector3D Barycentric(QVector3D object, QVector3D P1, QVector3D P2, QVector3D P3);
     bool isOverlappingTriangle(QVector3D baryc, QVector3D P1, QVector3D P2, QVector3D P3);
     float GetBarycentricHeight(QVector3D baryc, QVector3D P1, QVector3D P2, QVector3D P3);
-
-//   void setMatrix(GLint* matrixToSet) {mMatrixUniform = matrixToSet;}
-//   void setShader(Shader* shaderToSet) {mShader = shaderToSet;}
-
 
    friend class RenderWindow;
 };

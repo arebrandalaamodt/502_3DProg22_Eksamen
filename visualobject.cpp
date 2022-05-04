@@ -5,7 +5,6 @@
 
 VisualObject::VisualObject()
 {
-//    std::cout << "VisualObject::VisualObject()";
 
 }
 
@@ -17,8 +16,6 @@ VisualObject::VisualObject(std::string name, std::vector<Vertex> verticesVector)
 
 void VisualObject::init()
 {
-//    mMatrixUniform = matrixUniform;
-    //must call this to use OpenGL functions
     initializeOpenGLFunctions();
 
     glGenVertexArrays( 1, &mVAO );
@@ -50,17 +47,10 @@ void VisualObject::draw()
 {
     initializeOpenGLFunctions();
     glBindVertexArray( mVAO );
-    //glUniformMatrix4fv( mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
-//    glDrawElements(mDrawMethod, mVertices.size(), GL_UNSIGNED_INT, reinterpret_cast<const void*>(0));//mVertices.size());
     glDrawArrays(mDrawMethod, 0, mVertices.size());
 
     glBindVertexArray(0);
 }
-
-//VisualObject::~VisualObject() {
-//   glDeleteVertexArrays( 1, &mVAO );
-//   glDeleteBuffers( 1, &mVBO );
-//}
 
 
 
@@ -71,7 +61,6 @@ void VisualObject::move(float x, float y, float z)
 
 QVector3D VisualObject::getPosition()
 {
-//    std::cout << "VisualObject::getPosition()";
     QVector4D position = mPosition.column(3);
     return QVector3D{position.x(), position.y(), position.z()};
 }
@@ -85,18 +74,6 @@ void VisualObject::setPosition(const QVector3D positionToSet)
         mPosition.translate(positionToSet.x(), positionToSet.y(), positionToSet.z());
         updateMatrix();
 }
-
-//void VisualObject::setPosition(float x, float y, float z)
-//{
-//    //    x = x +1;
-//    //    y = y +1;
-//    //    z = z + 1;
-//        mPosition.translate(x-mx, y-my, z-mz);
-//        mx = x;
-//        my = y;
-//        mz = z;
-//        updateMatrix();
-//}
 
 void VisualObject::updateMatrix()
 {
@@ -112,9 +89,6 @@ void VisualObject::setMonoColor(QVector3D colorToSet)
         i->setB(colorToSet.z());
     }
 }
-
-//auto i = mObjects.begin(); i != mObjects.end(); i++)
-
 
 void VisualObject::setName(std::string name)
 {

@@ -7,25 +7,17 @@
 Heightmap::Heightmap(QString fileName, float heightMultiplier, float scalePerStep, int pixelsPerStep)
     : mScalePerStep(scalePerStep), mHeightMultiplier(heightMultiplier), mPixelsPerStep(pixelsPerStep)
 {
-//    std::cout << "Default Constructor Bad" << std::endl;
     setVertices(CreateArraysFromHeightmap(fileName, heightMultiplier, scalePerStep, pixelsPerStep));
-//    setVertices(CreateArraysFromHeightmap("../3Dprog22/Assets/EksamenHeightmap.bmp", 40, 1.f, 1));
-
 }
 
-//Heightmap::Heightmap(QString fileName, float heightMultiplier, float scalePerStep, int pixelsPerStep)
-//{
-//    setVertices(CreateArraysFromHeightmap(fileName, heightMultiplier, scalePerStep, pixelsPerStep));
-
-//}
 
 
 
-/*inline*/ std::vector<Vertex> Heightmap::CreateArraysFromHeightmap(const QString &filepath, float multiplier, float scalePerStep, int pixelsPerStep)
+std::vector<Vertex> Heightmap::CreateArraysFromHeightmap(const QString &filepath, float multiplier, float scalePerStep, int pixelsPerStep)
 {
 
     QImage img(filepath);
-    mImg = img;//.scaledToHeight(200);
+    mImg = img;
 
     std::vector<Vertex>mVertices;
     std::cout << pixelsPerStep << " " << mImg.height() << std::endl;
@@ -34,9 +26,6 @@ Heightmap::Heightmap(QString fileName, float heightMultiplier, float scalePerSte
     {
         for (int c = 0; c < mImg.width()-pixelsPerStep; c += pixelsPerStep)
         {
-            //int index = r*mImg.width() + c;
-            //float avg = float(*(mImg.constBits() + index) + *(mImg.constBits() + index+1) + *(mImg.constBits() + index+2)) / 3.f / 255.f;
-
             // top left
             QVector3D vecTopLeft = {float(c) * scalePerStep, float(mImg.height()-r) * scalePerStep, (1-mImg.pixelColor(c, r).lightnessF()) * multiplier};
 
@@ -70,35 +59,12 @@ Heightmap::Heightmap(QString fileName, float heightMultiplier, float scalePerSte
 
         }
     }
-
-    std::cout << "Storrelse: " << mVertices.size() << std::endl;
-
     return mVertices;
-
-//    std::vector<float> values;
-//    values.reserve(s.size() / (3+mImg.hasAlphaChannel()));
-
-//    for (int i = 0; i < s.size(); i += 3 + mImg.hasAlphaChannel()) {
-//        float avg = float(s[i] + s[i+1] + s[i+2]) / 3.f;
-//        values.push_back(avg);
-//    }
-
-
-////    for (auto c : s) {
-////        std::cout << (int)c << " ";
-////    }
-
 }
 
 UV Heightmap::CalculateUV(float xMin, float xMax, float yMin, float yMax, float x, float y)
 {
     UV outUV;
-//    float start = x - xMin;
-//    float end = xMax - start;
-//    out.u = start / end;
-//    start = y - yMin;
-//    end = yMax - start;
-//    out.v = start / end;
 
     float xRange = xMax - xMin;
     float xPos = x - xMin;
@@ -110,12 +76,6 @@ UV Heightmap::CalculateUV(float xMin, float xMax, float yMin, float yMax, float 
     return outUV;
 }
 
-
-
-//QVector3D HeightMap::GetNormal(float x, float y)
-//{
-//    return mCurrentNormal.normalized();
-//}
 
 float Heightmap::GetHeight(float x, float y)
 {

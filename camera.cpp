@@ -40,18 +40,8 @@ void Camera::lookAt(const QVector3D &at)
 {
     mVmatrix.setToIdentity();
     mVmatrix.lookAt(mEye, at, QVector3D{0, 0, 1});
-//        std::cout << "x: " <<at.x() << "| y: " <<at.y() << "| z: " <<at.z() << std::endl;
-
-//    mVmatrix.lookAt(mEye, QVector3D{0, 0, 0}, QVector3D{0, 0, 1});
 }
 
-//void Camera::update()
-//{
-////    std::cout << "Camera::update()" << std::endl;
-//    initializeOpenGLFunctions();
-//    glUniformMatrix4fv(mPmatrixUniform, 1, GL_FALSE, mPmatrix.constData());
-//    glUniformMatrix4fv(mVmatrixUniform, 1, GL_FALSE, mVmatrix.constData());
-//}
 
 void Camera::update(GLint pMat, GLint vMat)
 {
@@ -72,7 +62,6 @@ void Camera::Tick(float deltaTime)
 
     if(mTarget != nullptr)
     {
-//        std::cout << "top if" << std::endl;
          mTargetPos = mTarget->getPosition();
     }
     else
@@ -86,11 +75,7 @@ void Camera::Tick(float deltaTime)
     mCameraPos = mEye;
     mDirection = mCameraPos - mTargetPos;
     mDirection.normalize();
-//    std::cout << "myPos: X: " << mCameraPos.x() << " Y: " << mCameraPos.y() << " Z: " <<  mCameraPos.z() << std::endl;
-//    std::cout << "TargetPos: X: " << mTargetPos.x() << " Y: " << mTargetPos.y() << " Z: " <<  mTargetPos.z() << std::endl;
 
-
-    //get new camera location from normalized direction and distance from target
     mCameraPos = mDirection * mDistanceToTarget + mTargetPos;
 
     static auto oldDistanceToTarget = mDistanceToTarget;
@@ -112,14 +97,12 @@ void Camera::Tick(float deltaTime)
     }
 
 //    update();
-//    std::cout << "x: " <<mEye.x() << "| y: " <<mEye.y() << "| z: " <<mEye.z() << std::endl;
     oldTargetPos = mTargetPos;
 }
 
 void Camera::FollowMouseMovements(float x, float y)
 {
     QMatrix4x4 rotation;
-//    rotation.setToIdentity();
     QVector3D around;
 
     if (mTarget == nullptr) {
@@ -144,7 +127,6 @@ void Camera::FollowMouseMovements(float x, float y)
 
     if (QVector3D::dotProduct(GetRight(), oldRight) < 0)
         mEye = oldPosition;
-    //std::cout << "X: " << Right().x() << "y: " << Right().y() << "Z: " << Right().z() << std::endl;
 
     mVmatrix.setToIdentity();
 
@@ -154,23 +136,13 @@ void Camera::FollowMouseMovements(float x, float y)
 void Camera::SetPosition(const QVector3D &newPos)
 {
         mEye = newPos;
-
 }
 
 QVector3D Camera::GetForward()
 {
-//    auto targetPos = mTarget != nullptr ? mTarget->getPosition() : QVector3D{0, 0, 0};
-//    QVector3D out = targetPos - mEye;
-//    out.normalize();
-
-    //std::cout << "X: " << out.x() << "y: " << out.y() << "Z: " << out.z() << std::endl;
-//    return out;
-
     QVector4D temp = mPmatrix.column(0);
     temp.normalize();
     return QVector3D{temp.x(), temp.y(), temp.z()};
-
-//    return QVector3D{(mPmatrix.column(0)).x(), (mPmatrix.column(0)).y(), (mPmatrix.column(0).z)()};
 }
 
 QVector3D Camera::GetRight()
@@ -187,7 +159,6 @@ QVector3D Camera::GetUp()
     QVector3D out = QVector3D::crossProduct(GetRight(), GetForward());
 
     out.normalize();
-    //std::cout << "X: " << out.x() << "y: " << out.y() << "Z: " << out.z() << std::endl;
     return out;
 }
 
@@ -202,18 +173,3 @@ void Camera::Zoom(float diff)
     mDistanceToTarget = std::clamp(mDistanceToTarget + diff, 2.f, 40.f);
 }
 
-//void Camera::MoveForward(float value)
-//{
-//    QVector3D temp = QVector3D(value, 0.f, 0.f);
-//    mEye = mEye + temp;
-//}
-
-//void Camera::MoveRight(float value)
-//{
-
-//}
-
-//void Camera::MoveUp(float value)
-//{
-
-//}

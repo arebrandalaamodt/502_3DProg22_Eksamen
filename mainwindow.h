@@ -20,7 +20,7 @@ public:
 
 private slots:
     ///Slot called from the button in the mainwindow.ui file
-//    void on_rotationButton_toggled(bool checked);
+    // Oppgave 6, Toggles enten ved knappetrykk eller ved å trykke T
     void on_ToggleEditorMode_toggled(bool checked);
     ///Slot called from the File->Exit menu in the mainwindow.ui file
     void on_fileExit_triggered();
