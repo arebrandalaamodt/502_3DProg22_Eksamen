@@ -79,4 +79,4 @@ release/*
 *.aps
 *.h.cpp
 
-
+*txt_files

@@ -271,6 +271,7 @@ Vertex MeshGenerator::fourPointBezierCurveCalc(Vertex p0, Vertex p1, Vertex p2, 
     return returnPoint;
 }
 
+
 std::vector<Vertex> MeshGenerator::FourPointBezierCurve(Vertex p0, Vertex p1, Vertex p2, Vertex p3)
 {
     std::vector<Vertex> verticesOut;
@@ -282,5 +283,38 @@ std::vector<Vertex> MeshGenerator::FourPointBezierCurve(Vertex p0, Vertex p1, Ve
     {
         verticesOut.push_back(fourPointBezierCurveCalc(p0, p1, p2, p3, x));
     }
+    return verticesOut;
+}
+
+std::vector<Vertex> MeshGenerator::TriangleSurfaceReadTxt(const char* fileName)
+{
+    std::vector<Vertex> verticesOut;
+
+    std::ifstream file;
+//    std::ifstream inFile(fileName);
+//    std::string FileName =  + "_" + fileName;
+    file.open(fileName);
+
+    if (file.is_open())
+    {
+        std::cout << "Read file open" << std::endl;
+        int x{0};
+        Vertex localVertex;
+        file >> x;                          // First line assigned to x
+        std::cout << x << std::endl;
+        verticesOut.reserve(x);               // Reserves space for x number of vertices
+        for (int i=0; i<x; i++)
+        {
+             file >> localVertex;
+             verticesOut.push_back(localVertex);
+//             std::cout << "localVertex:" << localVertex << std::endl;
+        }
+        file.close();
+    }
+    else
+    {
+        std::cout << "Read file failed" << std::endl;
+    }
+
     return verticesOut;
 }

@@ -15,7 +15,7 @@ struct UV
 
 enum EDrawMethod
 {
-    Triangles = GL_TRIANGLES, LinesStrip = GL_LINE_STRIP, Lines = GL_LINES
+    Triangles = GL_TRIANGLES, LinesStrip = GL_LINE_STRIP, Lines = GL_LINES, Points = GL_POINTS
 };
 
 struct ShaderInfo{

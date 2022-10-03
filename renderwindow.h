@@ -7,6 +7,7 @@
 #include <QElapsedTimer>
 
 //~
+#include "regularsurface.h"
 #include "visualobject.h"
 #include "interactiveobject.h"
 #include "camera.h"
@@ -126,6 +127,9 @@ private:
     Camera mCamera2; // Camera for Play Mode
 
     Camera* mCurrentCamera                  {nullptr};
+
+
+    RegularSurface*     mRegularSurface         {nullptr};
 
     VisualObject*       mXYZ                {nullptr};
     VisualObject*       Plane               {nullptr};

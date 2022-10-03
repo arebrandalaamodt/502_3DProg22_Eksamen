@@ -154,6 +154,17 @@ void RenderWindow::setupGameObject()
     // ShaderInfo struct ligger i VisualObject
 
     // Oppgave 5 // Eksempel på editorOnly object som bare rendres i editor mode.
+
+    mRegularSurface = new RegularSurface("MapSurface", MeshGenerator::TriangleSurfaceReadTxt("../3Dprog22/txt_files/ArenewLas.txt"));
+
+    mRegularSurface->mMatrix.translate(-635757, -6667498, -133);
+//    mRegularSurface->setPosition(mSceneOrigo);
+    mRegularSurface->setupShader(mShaderInfo[0]);
+    mRegularSurface->mShaderInfo.TextureID = 0;
+    mRegularSurface->setDrawMethod(EDrawMethod::Points);
+    mObjects.push_back(mRegularSurface);
+
+
     mXYZ = new VisualObject("XYZ", MeshGenerator::XYZ(500.f));
     mXYZ->setupShader(mShaderInfo[0]);
     mXYZ->mShaderInfo.TextureID = 0;
@@ -186,6 +197,9 @@ void RenderWindow::setupGameObject()
     HeightmapGround->setupShader(mShaderInfo[2]);
     HeightmapGround->mShaderInfo.TextureID = 3;
     HeightmapGround->setDrawMethod(EDrawMethod::Triangles);
+
+    HeightmapGround->bShouldBeRendered = false;
+
     mObjects.push_back (HeightmapGround);
 
     // Oppgave 3

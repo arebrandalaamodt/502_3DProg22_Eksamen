@@ -9,6 +9,7 @@ SOURCES += main.cpp \
     heightmap.cpp \
     light.cpp \
     meshgenerator.cpp \
+    regularsurface.cpp \
     sun.cpp \
     texture.cpp \
     trophy.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     heightmap.h \
     light.h \
     meshgenerator.h \
+    regularsurface.h \
     sun.h \
     texture.h \
     trophy.h \
