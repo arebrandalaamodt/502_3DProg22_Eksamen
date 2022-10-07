@@ -155,10 +155,10 @@ void RenderWindow::setupGameObject()
 
     // Oppgave 5 // Eksempel på editorOnly object som bare rendres i editor mode.
 
-    mRegularSurface = new RegularSurface("MapSurface", MeshGenerator::TriangleSurfaceReadTxt("../3Dprog22/txt_files/ArenewLas.txt"));
+    mRegularSurface = new RegularSurface("MapSurface", MeshGenerator::TriangleSurfaceReadTxt("../3Dprog22/txt_files/test.txt"));
 
-    mRegularSurface->mMatrix.translate(-635757, -6667498, -133);
-//    mRegularSurface->setPosition(mSceneOrigo);
+//    mRegularSurface->mMatrix.translate(-635757, -6667498, -133);
+    mRegularSurface->setPosition(mSceneOrigo);
     mRegularSurface->setupShader(mShaderInfo[0]);
     mRegularSurface->mShaderInfo.TextureID = 0;
     mRegularSurface->setDrawMethod(EDrawMethod::Points);
@@ -180,7 +180,13 @@ void RenderWindow::setupGameObject()
     mPlayer->mShaderInfo.TextureID = 2;
     mPlayer->setDrawMethod(EDrawMethod::Triangles);
     mPlayer->setScale(3.f);
+
+    mPlayer->bShouldBeRendered = false;
+
+
     mObjects.push_back (mPlayer);
+
+
 
     // Oppgave 5 & 6
     mEditorModeTarget = new InteractiveObject("EditorModeTarget", MeshGenerator::OBJFile("../3Dprog22/Assets/camera.obj"));

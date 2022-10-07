@@ -20,7 +20,7 @@ std::vector<Vertex> Heightmap::CreateArraysFromHeightmap(const QString &filepath
     mImg = img;
 
     std::vector<Vertex>mVertices;
-    std::cout << pixelsPerStep << " " << mImg.height() << std::endl;
+//    std::cout << pixelsPerStep << " " << mImg.height() << std::endl;
 
     for (int r = mImg.height()-pixelsPerStep; r > 0; r -= pixelsPerStep)
     {

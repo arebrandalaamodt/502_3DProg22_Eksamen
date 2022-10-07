@@ -11,6 +11,7 @@ SOURCES += main.cpp \
     meshgenerator.cpp \
     regularsurface.cpp \
     sun.cpp \
+    textfileinterface.cpp \
     texture.cpp \
     trophy.cpp \
     vertex.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     meshgenerator.h \
     regularsurface.h \
     sun.h \
+    textfileinterface.h \
     texture.h \
     trophy.h \
     vertex.h \
