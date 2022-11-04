@@ -5,6 +5,13 @@ CONFIG      += c++17
 
 TARGET      = 3D-programmering
 
+win32 {
+    INCLUDEPATH += $(OPENAL_HOME)\\include\\AL
+    LIBS *= $(OPENAL_HOME)\\libs\\Win64\\libOpenAL32.dll.a
+}
+
+
+
 SOURCES += main.cpp \
     heightmap.cpp \
     light.cpp \
