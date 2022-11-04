@@ -17,6 +17,8 @@ SOURCES += main.cpp \
     light.cpp \
     meshgenerator.cpp \
     regularsurface.cpp \
+    soundmanager.cpp \
+    soundsource.cpp \
     sun.cpp \
     textfileinterface.cpp \
     texture.cpp \
@@ -30,7 +32,8 @@ SOURCES += main.cpp \
     renderwindow.cpp \
     shader.cpp \
     trianglesurface.cpp \
-    visualobject.cpp
+    visualobject.cpp \
+    wavfilehandler.cpp
 
 HEADERS += \
     OBJFileLoader.h \
@@ -38,6 +41,8 @@ HEADERS += \
     light.h \
     meshgenerator.h \
     regularsurface.h \
+    soundmanager.h \
+    soundsource.h \
     sun.h \
     textfileinterface.h \
     texture.h \
@@ -51,7 +56,8 @@ HEADERS += \
     renderwindow.h \
     shader.h \
     trianglesurface.h \
-    visualobject.h
+    visualobject.h \
+    wavfilehandler.h
 
 FORMS += \
     mainwindow.ui
