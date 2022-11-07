@@ -15,6 +15,8 @@
 #include "shader.h"
 #include "texture.h"
 
+#include "soundsource.h"
+
 #include <unordered_map>
 
 class QOpenGLContext;
@@ -156,6 +158,7 @@ private:
 public:
     void toggleEditorMode();
 
+    SoundSource* mLaserSound {nullptr};
 
 
 

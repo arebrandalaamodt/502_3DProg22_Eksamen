@@ -10,7 +10,7 @@ RegularSurface::RegularSurface()
 RegularSurface::RegularSurface(std::string name, std::vector<Vertex> verticesVector)
     : VisualObject(name, verticesVector)
 {
-    std::cout << "RegularSurface::RegularSurface(std::string name, std::vector<Vertex> verticesVector) | Constructor" << std::endl;
+//    std::cout << "RegularSurface::RegularSurface(std::string name, std::vector<Vertex> verticesVector) | Constructor" << std::endl;
 //    FullVerticesVector = verticesVector;
     setMinMaxValues(verticesVector);
     averageHeights(10.0000000000000000000000f, verticesVector);
@@ -48,19 +48,19 @@ void RegularSurface::setMinMaxValues(std::vector<Vertex> &verticesIn)
 //            std::cout << "YMin Updated" << std::endl;
         }
 
-        std::cout << std::setprecision(2);
-        std::cout << "Index: " << i << " | X: " << verticesIn[i].getX() << " | Y: " << verticesIn[i].getY();
-        std::cout << std::setprecision(2);
-        std::cout << " | Z: " << verticesIn[i].getZ()<< std::endl;
+//        std::cout << std::setprecision(2);
+//        std::cout << "Index: " << i << " | X: " << verticesIn[i].getX() << " | Y: " << verticesIn[i].getY();
+//        std::cout << std::setprecision(2);
+//        std::cout << " | Z: " << verticesIn[i].getZ()<< std::endl;
 
 //        std::cout << std::setprecision(8);
 //        std::cout << "Index: " << i << " | Y: " << verticesIn[i].getY()<< std::endl;
     }
 
-    std::cout << "XMax = " << mXMax << std::endl;
-    std::cout << "YMax = " << mYMax << std::endl;
-    std::cout << "XMin = " << mXMin << std::endl;
-    std::cout << "YMin = " << mYMin << std::endl;
+//    std::cout << "XMax = " << mXMax << std::endl;
+//    std::cout << "YMax = " << mYMax << std::endl;
+//    std::cout << "XMin = " << mXMin << std::endl;
+//    std::cout << "YMin = " << mYMin << std::endl;
 
 
     //    for(int i : verticesIn)
@@ -79,10 +79,10 @@ void RegularSurface::averageHeights(float gridResolution, std::vector<Vertex> &v
 
     for (float currentX = mXMin; currentX < mXMax; currentX += incrementStep)
     {
-        std::cout << "currentX: " << currentX << std::endl;
+//        std::cout << "currentX: " << currentX << std::endl;
         for (float currentY = mYMin; currentY < mYMax; currentY += incrementStep)
         {
-            std::cout << "currentY: " << currentY << std::endl;
+//            std::cout << "currentY: " << currentY << std::endl;
 
             int currentSquareCounter{0};
             float currentHeightTotal{0.f};
@@ -127,7 +127,7 @@ void RegularSurface::averageHeights(float gridResolution, std::vector<Vertex> &v
     }
 
 //    std::cout << "-----------------------------------------------" << std::endl;
-    std::cout << "Size of verticesOut: " << verticesOut.size() << std::endl;
+//    std::cout << "Size of verticesOut: " << verticesOut.size() << std::endl;
 
 
     for (int i = 0; i < verticesOut.size(); i++)

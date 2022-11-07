@@ -24,6 +24,12 @@
 #include "interactiveobject.h"
 
 #include "meshgenerator.h"
+//~~
+#include "soundmanager.h"
+#include "soundsource.h"
+
+#include <chrono>
+#include <thread>
 
 //~~//
 
@@ -134,14 +140,26 @@ void RenderWindow::init()
         (*i)->init();
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    mLaserSound = SoundManager::getInstance()->createSource
+            ("Laser", QVector3D(0.0f, 0.0f, 0.0f),"../3DProg22/Assets/laser.wav", false, 0.7f);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
     glUseProgram(mShaderProgram[0]->getProgram());
-
-
-    mPlayer->MoveForward(0.1f);
-
     glBindVertexArray(0);       //unbinds any VertexArray - good practice
-
-
 }
 
 void RenderWindow::setupGameObject()
@@ -528,6 +546,12 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     }
     if (event->key() == Qt::Key_T)
     {
+        std::cout << "RenderWindow::keyPressEvent() | Key_T" << std::endl;
+        mLaserSound->play();
+    }
+    if (event->key() == Qt::Key_Y)
+    {
+//        std::cout << "Key_Y" << std::endl;
         toggleEditorMode();
     }
 }
@@ -544,6 +568,12 @@ void RenderWindow::wheelEvent(QWheelEvent *event)
 void RenderWindow::Tick(float deltaTime)
 {
     mCurrentCamera->Tick(deltaTime);
+
+    SoundManager::getInstance()->updateListener(QVector3D(0.f, 0.f, 0.f),{0,0,0}, {1,0,0}, {0,0,1});
+
+//    mLaserSound->setPosition(QVector3D(0.f,0.f,0.f));
+//    mLaserSound->play();
+
 
     // Oppgave 3
     if (mSun)
@@ -661,4 +691,8 @@ void RenderWindow::toggleEditorMode()
     {
         mCurrentCamera = &mCamera;
     }
+
+    mLaserSound->play();
+
+
 }
