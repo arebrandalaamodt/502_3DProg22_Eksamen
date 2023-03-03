@@ -14,9 +14,11 @@ win32 {
 
 SOURCES += main.cpp \
     heightmap.cpp \
+    lasreader.cpp \
     light.cpp \
     meshgenerator.cpp \
     regularsurface.cpp \
+    regulartriangulation.cpp \
     soundmanager.cpp \
     soundsource.cpp \
     sun.cpp \
@@ -38,9 +40,11 @@ SOURCES += main.cpp \
 HEADERS += \
     OBJFileLoader.h \
     heightmap.h \
+    lasreader.h \
     light.h \
     meshgenerator.h \
     regularsurface.h \
+    regulartriangulation.h \
     soundmanager.h \
     soundsource.h \
     sun.h \

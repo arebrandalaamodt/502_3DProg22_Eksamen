@@ -121,10 +121,10 @@ void RenderWindow::init()
 
     // Oppgave 5 // Primært kamera brukes til Play mode
     setupGameObject();
-    mCamera.init();
-    mCamera.perspective(40, 4.0/3.0, 0.1, 1000.0);
-    mCamera.setTarget(mPlayer);
-    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 50.f));
+//    mCamera.init();
+//    mCamera.perspective(40, 4.0/3.0, 0.1, 1000.0);
+//    mCamera.setTarget(mPlayer);
+//    mCamera.SetPosition(mPlayer->getPosition() + QVector3D(0.f, 0.f, 50.f));
 
     // Oppgave 5 // Sekundært kamera brukes til Editor Mode,
     mCamera2.init();
@@ -183,26 +183,23 @@ void RenderWindow::setupGameObject()
     mObjects.push_back(mRegularSurface);
 
 
-    mXYZ = new VisualObject("XYZ", MeshGenerator::XYZ(500.f));
-    mXYZ->setupShader(mShaderInfo[0]);
-    mXYZ->mShaderInfo.TextureID = 0;
-    mXYZ->setDrawMethod(EDrawMethod::Lines);
-    mXYZ->bEditorOnlyRender = true;
-    mXYZ->setPosition(mSceneOrigo);
-    mObjects.push_back(mXYZ);
+//    mXYZ = new VisualObject("XYZ", MeshGenerator::XYZ(500.f));
+//    mXYZ->setupShader(mShaderInfo[0]);
+//    mXYZ->mShaderInfo.TextureID = 0;
+//    mXYZ->setDrawMethod(EDrawMethod::Lines);
+//    mXYZ->bEditorOnlyRender = true;
+//    mXYZ->setPosition(mSceneOrigo);
+//    mObjects.push_back(mXYZ);
 
     // Oppgave 4
-    mPlayer = new InteractiveObject("Player", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
-    mPlayer->setupShader(mShaderInfo[2]);
-    mPlayer->setPosition(250.f, 250.f, 10.f);
-    mPlayer->mShaderInfo.TextureID = 2;
-    mPlayer->setDrawMethod(EDrawMethod::Triangles);
-    mPlayer->setScale(3.f);
-
-    mPlayer->bShouldBeRendered = false;
-
-
-    mObjects.push_back (mPlayer);
+//    mPlayer = new InteractiveObject("Player", MeshGenerator::OBJFile("../3Dprog22/Assets/monkey.obj"));
+//    mPlayer->setupShader(mShaderInfo[2]);
+//    mPlayer->setPosition(250.f, 250.f, 10.f);
+//    mPlayer->mShaderInfo.TextureID = 2;
+//    mPlayer->setDrawMethod(EDrawMethod::Triangles);
+//    mPlayer->setScale(3.f);
+//    mPlayer->bShouldBeRendered = true;
+//    mObjects.push_back (mPlayer);
 
 
 
@@ -222,7 +219,7 @@ void RenderWindow::setupGameObject()
     HeightmapGround->mShaderInfo.TextureID = 3;
     HeightmapGround->setDrawMethod(EDrawMethod::Triangles);
 
-    HeightmapGround->bShouldBeRendered = false;
+    HeightmapGround->bShouldBeRendered = true;
 
     mObjects.push_back (HeightmapGround);
 
@@ -238,15 +235,15 @@ void RenderWindow::setupGameObject()
     mObjects.push_back (mSun);
 
     //Oppgave 7
-    mBezierCurve = new VisualObject("BezierCurve", MeshGenerator::FourPointBezierCurve(Vertex(10,10,10,1,0,1),
-                                                                                       Vertex(30,20,10,1,0,1),
-                                                                                       Vertex(40,10,10,1,0,1),
-                                                                                       Vertex(50,30,10,1,0,1)));
-    mBezierCurve->setupShader(mShaderInfo[0]);
-    mBezierCurve->mShaderInfo.TextureID = 0;
-    mBezierCurve->setDrawMethod(EDrawMethod::Lines);
-    mBezierCurve->setPosition(QVector3D(250.f, 250.f, 20.f));
-    mObjects.push_back(mBezierCurve);
+//    mBezierCurve = new VisualObject("BezierCurve", MeshGenerator::FourPointBezierCurve(Vertex(10,10,10,1,0,1),
+//                                                                                       Vertex(30,20,10,1,0,1),
+//                                                                                       Vertex(40,10,10,1,0,1),
+//                                                                                       Vertex(50,30,10,1,0,1)));
+//    mBezierCurve->setupShader(mShaderInfo[0]);
+//    mBezierCurve->mShaderInfo.TextureID = 0;
+//    mBezierCurve->setDrawMethod(EDrawMethod::Lines);
+//    mBezierCurve->setPosition(QVector3D(250.f, 250.f, 20.f));
+//    mObjects.push_back(mBezierCurve);
 
     //Oppgave 7
     mNPC1 = new NPC("NPC1", MeshGenerator::Cube());
@@ -256,24 +253,24 @@ void RenderWindow::setupGameObject()
     mObjects.push_back(mNPC1);
 
     //Oppgave 8
-    bool bRedTeam = true;
-    for (int i = 0; i < 2; i++)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            mTrophy = new Trophy(bRedTeam);
-            mTrophy->setupShader(mShaderInfo[0]);
-            mTrophy->mShaderInfo.TextureID = 0;
-            std::string name = "trophy" + std::to_string(i);
-            mTrophy->setName(name);
-            float randX = (rand() % 100) + mSceneOrigo.x();
-            float randY = (rand() % 100) + mSceneOrigo.y();
-            mTrophy->move(randX, randY, 5.f);
-            mObjects.push_back(mTrophy);
-            mTrophies.push_back(mTrophy);
-        }
-        bRedTeam = false;
-    }
+//    bool bRedTeam = true;
+//    for (int i = 0; i < 2; i++)
+//    {
+//        for (int i = 0; i < 10; i++)
+//        {
+//            mTrophy = new Trophy(bRedTeam);
+//            mTrophy->setupShader(mShaderInfo[0]);
+//            mTrophy->mShaderInfo.TextureID = 0;
+//            std::string name = "trophy" + std::to_string(i);
+//            mTrophy->setName(name);
+//            float randX = (rand() % 100) + mSceneOrigo.x();
+//            float randY = (rand() % 100) + mSceneOrigo.y();
+//            mTrophy->move(randX, randY, 5.f);
+//            mObjects.push_back(mTrophy);
+//            mTrophies.push_back(mTrophy);
+//        }
+//        bRedTeam = false;
+//    }
 
 
 }
