@@ -31,6 +31,8 @@
 #include <chrono>
 #include <thread>
 
+#include "regulartriangulation.h"
+
 //~~//
 
 
@@ -151,6 +153,7 @@ void RenderWindow::init()
 
 
 
+    Triangulation = new RegularTriangulation("Arnes.txt");
 
 
 

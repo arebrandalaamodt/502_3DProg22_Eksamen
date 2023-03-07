@@ -2,13 +2,30 @@
 #define LASREADER_H
 
 #include <vector>
+#include <string>
 #include "vertex.h"
 
 
 struct Triangle
 {
-    int Indeces[3] {0,0,0};
-    int Neighbors[3] {0,0,0};
+    int Indices[3];
+    int Neighbors[3];
+
+
+    friend std::ostream& operator<< (std::ostream& os, const Triangle& t)
+    {
+      os << std::fixed;
+      os << t.Indices[0] << " " << t.Indices[1] << " " << t.Indices[2] << " ";
+      os << t.Neighbors[0] << " " << t.Neighbors[1] << " " << t.Neighbors[2];
+      return os;
+    }
+    friend std::istream& operator>> (std::istream& is, Triangle& t)
+    {
+        is >> t.Indices[0] >> t.Indices[1] >> t.Indices[2];
+        is >> t.Neighbors[0] >> t.Neighbors[1] >> t.Neighbors[2];
+      return is;
+    }
+
 };
 
 struct MinAndMax
@@ -49,6 +66,13 @@ class LASReader
 public:
 
     static PointCloudMesh GenerateVerticesFromFile(std::string FileName, int Resolution, float Size = 10.0f);
+    static bool ReadFromFile (std::string FileName, PointCloudMesh &InPointCloudMesh);
+
+
+private:
+
+    template<typename T>
+    static bool ReadTemplate (std::string FileName, std::vector<T> &Vector);
 
 
 

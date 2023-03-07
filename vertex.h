@@ -11,6 +11,7 @@ class Vertex {
 
    //! Overloaded ostream operator which reads all vertex data from an open textfile stream
    friend std::istream& operator>> (std::istream&, Vertex&);
+   friend std::string& operator>> (std::string& is, Vertex& v);
 
 private:
    float m_xyz[3];       	// position i 3D

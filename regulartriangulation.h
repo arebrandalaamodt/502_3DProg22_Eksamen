@@ -1,6 +1,7 @@
 #ifndef REGULARTRIANGULATION_H
 #define REGULARTRIANGULATION_H
 
+#include "lasreader.h"
 #include "visualobject.h"
 
 
@@ -15,8 +16,9 @@ public:
 
 
 private:
-    int Resolution{0};
-    float Size{0.0f};
+    int Resolution{500};
+    float Size{500.0f};
+    struct PointCloudMesh PointCloud;
 
 };
 

@@ -297,11 +297,11 @@ std::vector<Vertex> MeshGenerator::TriangleSurfaceReadTxt(const char* fileName)
 
     if (file.is_open())
     {
-        std::cout << "Read file open" << std::endl;
+//        std::cout << "Read file open" << std::endl;
         int x{0};
         Vertex localVertex;
         file >> x;                          // First line assigned to x
-        std::cout << x << std::endl;
+//        std::cout << x << std::endl;
         verticesOut.reserve(x);               // Reserves space for x number of vertices
         for (int i=0; i<x; i++)
         {

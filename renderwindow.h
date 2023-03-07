@@ -22,6 +22,7 @@
 class QOpenGLContext;
 class Shader;
 class MainWindow;
+class RegularTriangulation;
 
 /// This inherits from QWindow to get access to the Qt functionality and
 // OpenGL surface.
@@ -151,6 +152,9 @@ private:
     class Light*        mLight              {nullptr};
     class Sun*          mSun                {nullptr};
 
+    class RegularTriangulation*  Triangulation  {nullptr};
+
+
 
     bool bIsEditorModeEnabled               {true};
     int mNumberOfTrophiesGathered {0};
@@ -159,8 +163,6 @@ public:
     void toggleEditorMode();
 
     SoundSource* mLaserSound {nullptr};
-
-
 
 //    VisualObject*  mOctahedronBall      {nullptr};
 //    VisualObject*  mTest                {nullptr};
@@ -172,6 +174,16 @@ public:
 //    Cube*               mCube           {nullptr};
 //    NPC*                mNPC            {nullptr};
 //    BezierCurve*        mBezier         {nullptr};
+
+
+
+
+
+
+
+
+
+
     //~~//
 
     void setupGameObject();
