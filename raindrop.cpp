@@ -66,7 +66,7 @@ void Raindrop::TickRaindrop(float DeltaTime)
     {
         if (bReportedOnce == false)
         {
-            qDebug() << __FUNCTION__ " | Raindrop #" << Index << " hit the ground at X: " << CurrentPosition.x() << " Y: " << CurrentPosition.y();
+            qDebug() << __FUNCTION__ " | Raindrop #" << Index << " hit the ground at X: " << CurrentPosition.x() << " Y: " << CurrentPosition.y() << " Z: " << CurrentPosition.z();
             bReportedOnce = true;
         }
     }
