@@ -26,8 +26,8 @@
 
 #include "meshgenerator.h"
 //~~
-#include "soundmanager.h"
-#include "soundsource.h"
+//#include "soundmanager.h"
+//#include "soundsource.h"
 
 #include <chrono>
 #include <thread>
@@ -159,8 +159,8 @@ void RenderWindow::init()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    mLaserSound = SoundManager::getInstance()->createSource
-            ("Laser", QVector3D(0.0f, 0.0f, 0.0f),"../3DProg22/Assets/laser.wav", false, 0.7f);
+//    mLaserSound = SoundManager::getInstance()->createSource
+//            ("Laser", QVector3D(0.0f, 0.0f, 0.0f),"../3DProg22/Assets/laser.wav", false, 0.7f);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -613,7 +613,7 @@ void RenderWindow::Tick(float deltaTime)
         (*i)->TickRaindrop(deltaTime);
     }
 
-    SoundManager::getInstance()->updateListener(QVector3D(0.f, 0.f, 0.f),{0,0,0}, {1,0,0}, {0,0,1});
+//    SoundManager::getInstance()->updateListener(QVector3D(0.f, 0.f, 0.f),{0,0,0}, {1,0,0}, {0,0,1});
 
 //    mLaserSound->setPosition(QVector3D(0.f,0.f,0.f));
 //    mLaserSound->play();
@@ -736,7 +736,7 @@ void RenderWindow::toggleEditorMode()
         mCurrentCamera = &mCamera;
     }
 
-    mLaserSound->play();
+//    mLaserSound->play();
 
 
 }

@@ -162,7 +162,7 @@ private:
 public:
     void toggleEditorMode();
 
-    SoundSource* mLaserSound {nullptr};
+//    SoundSource* mLaserSound {nullptr};
 
 //    VisualObject*  mOctahedronBall      {nullptr};
 //    VisualObject*  mTest                {nullptr};

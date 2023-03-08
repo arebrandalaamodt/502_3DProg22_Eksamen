@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     //Makes a Qt application
     QApplication a(argc, argv);
 
-    SoundManager::getInstance()->init();
+//    SoundManager::getInstance()->init();
 
     //Makes the Qt MainWindow and shows it.
     MainWindow w;
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
     int x = a.exec();
 
-    SoundManager::getInstance()->cleanUp();
+//    SoundManager::getInstance()->cleanUp();
 
     return x;
 }
