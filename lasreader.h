@@ -30,21 +30,21 @@ struct Triangle
 
 struct MinAndMax
 {
-    float MaxX{0};
-    float MinX{0};
-    float MaxY{0};
-    float MinY{0};
-    float MaxZ{0};
-    float MinZ{0};
+    double MaxX{0};
+    double MinX{0};
+    double MaxY{0};
+    double MinY{0};
+    double MaxZ{0};
+    double MinZ{0};
 
-    unsigned int NumberOfPoint{0};
+    unsigned long long NumberOfPoints{0};
 };
 
 struct XYZCoords
 {
-    int X {0};
-    int Y {0};
-    int Z {0};
+    double X {0};
+    double Y {0};
+    double Z {0};
 };
 
 struct PointCloud
@@ -74,7 +74,10 @@ private:
     template<typename T>
     static bool ReadTemplate (std::string FileName, std::vector<T> &Vector);
 
+    static double GetHeight(std::pair<int, float> AverageHeights);
 
+    template<typename T>
+    static void WriteToFile(std::string FileName, const std::vector<T> &InVector);
 
 };
 

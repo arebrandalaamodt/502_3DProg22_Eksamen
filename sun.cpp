@@ -5,7 +5,7 @@ Sun::Sun()
 {
     mMatrix.setToIdentity();
     mMatrix.translate(mOrbitCenter);
-    this->move(mOrbitRadius, 0.f, 0.f);
+    this->move(mOrbitRadius, 0.f, 300.f);
 
     mOrbitPoint = mOrbitCenter + QVector3D(mOrbitRadius, 0.f, 0.f);
 }

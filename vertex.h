@@ -40,5 +40,7 @@ public:
     float getY();
     float getZ();
 
+    QVector3D GetXYZ();
+
 };
 #endif // VERTEX_H

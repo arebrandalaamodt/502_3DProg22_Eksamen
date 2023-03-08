@@ -157,3 +157,11 @@ float VisualObject::GetBarycentricHeight(QVector3D baryc, QVector3D P1, QVector3
 {
     return P1.z() * baryc.x() + P2.z() * baryc.y() + P3.z() * baryc.z();
 }
+
+QVector3D VisualObject::GetPosition()
+{
+    auto pos = mMatrix.column(3);
+    return QVector3D{pos.x(), pos.y(), pos.z()};
+}
+
+

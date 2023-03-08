@@ -38,10 +38,11 @@ public:
     ~VisualObject() {glDeleteVertexArrays( 1, &mVAO); glDeleteBuffers( 1, &mVBO );};
 
     virtual void init();
+//    virtual void init(GLint matrixUniform);
     virtual void draw();
 
     virtual void move(float x, float y, float z);
-    virtual void move(float dt) { };
+//    virtual void move(float dt) { };
     virtual void move(const QVector3D& xyz) { };
 
     virtual QVector3D getPosition();
@@ -64,6 +65,8 @@ protected:
     std::vector<Vertex> mVertices;
     GLuint mVAO{0};
     GLuint mVBO{0};
+    GLint mMatrixUniform{0};
+
 
     float mx, my, mz {0.f};
 
@@ -85,6 +88,9 @@ protected:
     QVector3D Barycentric(QVector3D object, QVector3D P1, QVector3D P2, QVector3D P3);
     bool isOverlappingTriangle(QVector3D baryc, QVector3D P1, QVector3D P2, QVector3D P3);
     float GetBarycentricHeight(QVector3D baryc, QVector3D P1, QVector3D P2, QVector3D P3);
+
+
+    QVector3D GetPosition();
 
    friend class RenderWindow;
 };

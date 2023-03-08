@@ -11,6 +11,7 @@
 #include <string>
 #include <chrono>
 
+#include "raindrop.h"
 #include "shader.h"
 #include "mainwindow.h"
 #include "logger.h"
@@ -137,6 +138,20 @@ void RenderWindow::init()
 
     mCurrentCamera = &mCamera2;
 
+
+
+
+    Triangulation = new RegularTriangulation("Arnes4.txt");
+
+//    mRegularSurface->setPosition(mSceneOrigo);
+    Triangulation->setupShader(mShaderInfo[2]);
+    Triangulation->mShaderInfo.TextureID = 3;
+//    mRegularSurface->setDrawMethod(EDrawMethod::Triangles);
+
+    mObjects.push_back(Triangulation);
+
+
+
     for (auto i = mObjects.begin(); i != mObjects.end(); i++)
     {
         (*i)->init();
@@ -153,7 +168,6 @@ void RenderWindow::init()
 
 
 
-    Triangulation = new RegularTriangulation("Arnes.txt");
 
 
 
@@ -176,14 +190,14 @@ void RenderWindow::setupGameObject()
 
     // Oppgave 5 // Eksempel på editorOnly object som bare rendres i editor mode.
 
-    mRegularSurface = new RegularSurface("MapSurface", MeshGenerator::TriangleSurfaceReadTxt("../3Dprog22/txt_files/test.txt"));
+//    mRegularSurface = new RegularSurface("MapSurface", MeshGenerator::TriangleSurfaceReadTxt("../3Dprog22/txt_files/test.txt"));
 
 //    mRegularSurface->mMatrix.translate(-635757, -6667498, -133);
-    mRegularSurface->setPosition(mSceneOrigo);
-    mRegularSurface->setupShader(mShaderInfo[0]);
-    mRegularSurface->mShaderInfo.TextureID = 0;
-    mRegularSurface->setDrawMethod(EDrawMethod::Points);
-    mObjects.push_back(mRegularSurface);
+//    mRegularSurface->setPosition(mSceneOrigo);
+//    mRegularSurface->setupShader(mShaderInfo[0]);
+//    mRegularSurface->mShaderInfo.TextureID = 0;
+//    mRegularSurface->setDrawMethod(EDrawMethod::Points);
+//    mObjects.push_back(mRegularSurface);
 
 
 //    mXYZ = new VisualObject("XYZ", MeshGenerator::XYZ(500.f));
@@ -213,6 +227,8 @@ void RenderWindow::setupGameObject()
     mEditorModeTarget->mShaderInfo.TextureID = 2;
     mEditorModeTarget->setDrawMethod(EDrawMethod::Triangles);
     mEditorModeTarget->bEditorOnlyRender = true;
+    mEditorModeTarget->bShouldBeRendered = false;
+
     mObjects.push_back (mEditorModeTarget);
 
     // Oppgave 2 // Følger oppgave-tall logikk der oppgave 1 er å lage et tomt repo.
@@ -222,7 +238,7 @@ void RenderWindow::setupGameObject()
     HeightmapGround->mShaderInfo.TextureID = 3;
     HeightmapGround->setDrawMethod(EDrawMethod::Triangles);
 
-    HeightmapGround->bShouldBeRendered = true;
+    HeightmapGround->bShouldBeRendered = false;
 
     mObjects.push_back (HeightmapGround);
 
@@ -234,7 +250,8 @@ void RenderWindow::setupGameObject()
     mSun->setupShader(mShaderInfo[0]);
     mSun->mShaderInfo.TextureID = 0;
     mSun->setDrawMethod(EDrawMethod::Triangles);
-    mSun->mLightStrenght = 200.f;
+    mSun->mLightStrenght = 50000.f;
+//    mSun->bShouldBeRendered = false;
     mObjects.push_back (mSun);
 
     //Oppgave 7
@@ -547,7 +564,29 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_T)
     {
         std::cout << "RenderWindow::keyPressEvent() | Key_T" << std::endl;
-        mLaserSound->play();
+//        mLaserSound->play();
+
+
+        float randX = (rand() % 200) + 125.0f;
+        float randY = (rand() % 200) + 100.0f;
+        float randZ = (rand() % 30) + 60.0f;
+
+        Raindrop* NewRaindrop = new Raindrop(QVector3D(randX, randY, randZ), 1, Triangulation, 1);
+
+//        NewRaindrop->setVertices(MeshGenerator::Octahedron(8));
+        NewRaindrop->init();
+        NewRaindrop->setupShader(mShaderInfo[0]);
+        NewRaindrop->mShaderInfo.TextureID = 0;
+//        NewBall->move(0,0,50);
+
+//        NewRaindrop->setPosition(250.f, 200.f, 40.f);
+
+
+//        NewBall->
+        Raindrops.push_back(NewRaindrop);
+        mObjects.push_back(NewRaindrop);
+
+
     }
     if (event->key() == Qt::Key_Y)
     {
@@ -569,6 +608,11 @@ void RenderWindow::Tick(float deltaTime)
 {
     mCurrentCamera->Tick(deltaTime);
 
+    for (auto i = Raindrops.begin(); i != Raindrops.end(); i++)
+    {
+        (*i)->TickRaindrop(deltaTime);
+    }
+
     SoundManager::getInstance()->updateListener(QVector3D(0.f, 0.f, 0.f),{0,0,0}, {1,0,0}, {0,0,1});
 
 //    mLaserSound->setPosition(QVector3D(0.f,0.f,0.f));
@@ -578,7 +622,7 @@ void RenderWindow::Tick(float deltaTime)
     // Oppgave 3
     if (mSun)
     {
-        mSun->progressOrbit();
+//        mSun->progressOrbit();
     }
     // Oppgave 7
     if (mNPC1)

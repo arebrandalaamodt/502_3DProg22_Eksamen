@@ -17,6 +17,7 @@ SOURCES += main.cpp \
     lasreader.cpp \
     light.cpp \
     meshgenerator.cpp \
+    raindrop.cpp \
     regularsurface.cpp \
     regulartriangulation.cpp \
     soundmanager.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     lasreader.h \
     light.h \
     meshgenerator.h \
+    raindrop.h \
     regularsurface.h \
     regulartriangulation.h \
     soundmanager.h \

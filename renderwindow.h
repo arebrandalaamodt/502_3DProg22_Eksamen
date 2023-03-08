@@ -153,7 +153,7 @@ private:
     class Sun*          mSun                {nullptr};
 
     class RegularTriangulation*  Triangulation  {nullptr};
-
+    std::vector<class Raindrop*> Raindrops;
 
 
     bool bIsEditorModeEnabled               {true};
