@@ -13,12 +13,9 @@ public:
 
 private:
     unsigned long long Index{0};
-//    float TimeAlive{0};
-//    float TimeToLive{5.0f};
-    float LastReportTime{0.f};
-    float TimeToKill{60.f};
     bool IsOnGround{false};
     bool HasReachedGround{false};
+    bool bReportedOnce {false};
     float Friction{0.999};
     float Scale{0.5};
     static inline float WorldScale{1};

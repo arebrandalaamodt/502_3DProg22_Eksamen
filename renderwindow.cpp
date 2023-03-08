@@ -570,8 +570,10 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
         float randX = (rand() % 200) + 125.0f;
         float randY = (rand() % 200) + 100.0f;
         float randZ = (rand() % 30) + 60.0f;
+        static int RaindropIndex {0};
 
-        Raindrop* NewRaindrop = new Raindrop(QVector3D(randX, randY, randZ), 1, Triangulation, 1);
+        Raindrop* NewRaindrop = new Raindrop(QVector3D(randX, randY, randZ), 1, Triangulation, RaindropIndex);
+        RaindropIndex++;
 
 //        NewRaindrop->setVertices(MeshGenerator::Octahedron(8));
         NewRaindrop->init();

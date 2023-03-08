@@ -60,14 +60,12 @@ struct PointCloudMesh
     float Scale {1.0f};
 };
 
-
 class LASReader
 {
 public:
 
     static PointCloudMesh GenerateVerticesFromFile(std::string FileName, int Resolution, float Size = 10.0f);
     static bool ReadFromFile (std::string FileName, PointCloudMesh &InPointCloudMesh);
-
 
 private:
 
@@ -78,7 +76,6 @@ private:
 
     template<typename T>
     static void WriteToFile(std::string FileName, const std::vector<T> &InVector);
-
 };
 
 #endif // LASREADER_H

@@ -62,13 +62,13 @@ void Raindrop::TickRaindrop(float DeltaTime)
         mMatrix.translate(NewVelocity);
     }
 
-//    if (HasReachedGround)
-//    {
-//        if (TimeAlive > TimeToLive)
-//        {
-//            qDebug() << __FUNCTION__ " | Should Delete now.";
-////            delete this; // Crashes
-//        }
-//    }
+    if (HasReachedGround == true)
+    {
+        if (bReportedOnce == false)
+        {
+            qDebug() << __FUNCTION__ " | Raindrop #" << Index << " hit the ground at X: " << CurrentPosition.x() << " Y: " << CurrentPosition.y();
+            bReportedOnce = true;
+        }
+    }
 
 }
